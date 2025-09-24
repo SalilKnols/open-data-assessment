@@ -1,28 +1,8 @@
-# NashTech Open Data Maturity Assessment — Improved UI and Excel Export
+# NashTech Open Data Maturity Assessment
 
-This project is a practical implementation of the Open Data Institute (ODI) maturity framework. It provides a guided questionnaire, a modern Angular user interface, and an export feature that generates multi-sheet Excel reports.
+This is a practical implementation of the Open Data Institute (ODI) maturity framework. It provides a guided questionnaire, a modern Angular user interface, and an export feature that generates Excel reports.
 
 The goal is to help teams and organisations assess their open data practices, capture results, and produce clear, shareable reports.
-
-## Key Improvements
-
-### UI and Usability
-- Form fields and icons aligned for a cleaner layout
-- Reduced header height and padding to make better use of screen space
-- Help sections aligned with content for clearer guidance
-- More compact result cards and sections for improved information density
-- Improved responsiveness for tablet and mobile screens
-
-### Excel Export
-- Generates professional Excel files with multiple worksheets
-- Exports scores, responses, and analysis data
-- Automatic file naming that includes organisation and timestamp
-- Multi-sheet layout: Summary, Detailed Responses, and Theme Analysis
-
-### General Experience
-- Faster load times through optimized components
-- Improved visual hierarchy and accessibility
-- Smoother transitions and focused UI improvements
 
 ## ODI Framework Coverage
 
@@ -42,12 +22,6 @@ Responses are scored using the official five-level maturity scale:
 4. Managed — Processes are monitored and managed
 5. Optimising — Continuous improvement and innovation
 
-## Design Notes
-
-- Primary color: #0066cc
-- Accent color: #ff6600
-- Compact components and reduced padding for denser layouts
-- SCSS-based styling with a focus on readability and accessibility
 
 ## Quick Start
 
@@ -107,8 +81,6 @@ To run the app locally:
 - Use `ng serve` from the project root
 - Edit or extend the assessment questions and configuration under `src/app`
 - The Excel export logic is implemented in `src/app/services/assessment.service.ts`
-
-If you need help adapting the project for your organisation, contact the repository owner or the team that provided these files.
 
 ## Resources
 
