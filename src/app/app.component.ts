@@ -48,7 +48,7 @@ import { ProgressBarComponent } from './components/progress-bar/progress-bar.com
                 <h4>NashTech</h4>
                 <ul>
                   <li><a href="https://accelerator.nashtechglobal.com" target="_blank" rel="noopener">Accelerators</a></li>
-                  <li><a href="https://nashtech.com" target="_blank" rel="noopener">About Us</a></li>
+                  <li><a href="https://www.nashtechglobal.com/about-us/" target="_blank" rel="noopener">About Us</a></li>
                 </ul>
               </div>
 

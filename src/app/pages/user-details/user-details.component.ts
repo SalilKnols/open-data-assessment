@@ -34,20 +34,6 @@ import { UserDetails } from '../../models/assessment.model';
             <p class="hero-description">
               Professional Open Data Maturity Assessment using the official ODI framework
             </p>
-            <div class="hero-features">
-              <div class="feature-item">
-                <mat-icon class="feature-icon">verified</mat-icon>
-                <span>Official ODI</span>
-              </div>
-              <div class="feature-item">
-                <mat-icon class="feature-icon">speed</mat-icon>
-                <span>Accelerated</span>
-              </div>
-              <div class="feature-item">
-                <mat-icon class="feature-icon">analytics</mat-icon>
-                <span>Excel Reports</span>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -161,12 +147,7 @@ import { UserDetails } from '../../models/assessment.model';
               </form>
             </mat-card-content>
 
-            <mat-card-actions class="card-actions">
-              <div class="privacy-note">
-                <mat-icon class="privacy-icon">security</mat-icon>
-                <span>Secure • Privacy Protected • Excel Export</span>
-              </div>
-            </mat-card-actions>
+            
           </mat-card>
         </div>
 
@@ -189,15 +170,6 @@ import { UserDetails } from '../../models/assessment.model';
               <div class="info-text">
                 <h4>25-35 Minutes</h4>
                 <p>Professional assessment</p>
-              </div>
-            </div>
-            <div class="info-card">
-              <div class="info-icon gradient-bg">
-                <mat-icon>file_download</mat-icon>
-              </div>
-              <div class="info-text">
-                <h4>Excel Reports</h4>
-                <p>Comprehensive analysis</p>
               </div>
             </div>
           </div>
@@ -331,7 +303,7 @@ import { UserDetails } from '../../models/assessment.model';
       width: 100% !important;
       font-size: 16px !important;
       line-height: 1.5 !important;
-      padding: 0 !important;
+      padding: 0 16px !important;
       margin: 0 !important;
       border: none !important;
       outline: none !important;
@@ -420,14 +392,9 @@ import { UserDetails } from '../../models/assessment.model';
       opacity: 0.7 !important;
     }
 
-    /* Ensure proper spacing between fields */
-    .form-field-wrapper + .form-field-wrapper {
-      margin-top: var(--nashtech-spacing-md);
-    }
-
     /* Form Actions */
     .form-actions {
-      margin-top: var(--nashtech-spacing-lg);
+      margin-top: 0;
       text-align: center;
     }
 
@@ -438,24 +405,6 @@ import { UserDetails } from '../../models/assessment.model';
       font-weight: 500;
       border-radius: var(--nashtech-radius-md);
       box-shadow: var(--nashtech-shadow-md);
-    }
-
-    .card-actions {
-      padding: var(--nashtech-spacing-sm) var(--nashtech-spacing-lg) var(--nashtech-spacing-md);
-      justify-content: center;
-    }
-
-    .privacy-note {
-      display: flex;
-      align-items: center;
-      gap: var(--nashtech-spacing-xs);
-      font-size: 0.8125rem;
-      color: var(--nashtech-text-muted);
-    }
-
-    .privacy-icon {
-      font-size: 0.875rem;
-      color: var(--nashtech-accent);
     }
 
     /* Compact Info Section */
@@ -502,6 +451,10 @@ import { UserDetails } from '../../models/assessment.model';
     .info-icon mat-icon {
       font-size: 1rem;
       color: var(--nashtech-white);
+      /* Ensure the icon itself is a centered block */
+      height: 1rem;
+      width: 1rem;
+      line-height: 1rem;
     }
 
     .info-text {
@@ -588,7 +541,10 @@ export class UserDetailsComponent implements OnInit {
     // Reset current step to 0 when on user details page
     this.assessmentService.setCurrentStep(0);
 
-    // Pre-fill form if user details already exist
+    // Clear stored user details on page load so the form is empty on refresh
+    this.assessmentService.clearUserDetails();
+
+    // Pre-fill form if user details already exist (after clear this will usually be empty)
     this.assessmentService.assessmentData$.subscribe(data => {
       if (data.userDetails) {
         this.userForm.patchValue(data.userDetails);
@@ -610,6 +566,9 @@ export class UserDetailsComponent implements OnInit {
       this.isSubmitting = true;
 
       const userDetails: UserDetails = this.userForm.value;
+
+      // Reset any previous assessment data so this is a fresh run for a new user
+      this.assessmentService.resetAssessment();
 
       // Save user details to service
       this.assessmentService.setUserDetails(userDetails);

@@ -22,7 +22,7 @@ import { AssessmentService } from '../../services/assessment.service';
           <!-- Compact Welcome Header -->
           <div class="welcome-header">
             <div class="welcome-badge gradient-bg">
-              <mat-icon class="welcome-icon">rocket_launch</mat-icon>
+              <mat-icon class="welcome-icon" aria-hidden="true">rocket_launch</mat-icon>
               <h1 class="welcome-title">Ready to Begin?</h1>
               <p class="welcome-subtitle">
                 Your professional Open Data Maturity Assessment powered by NashTech Accelerators
@@ -156,7 +156,7 @@ import { AssessmentService } from '../../services/assessment.service';
     }
 
     .welcome-badge {
-      padding: var(--nashtech-spacing-lg);
+      padding: var(--nashtech-spacing-xl); /* Increased padding to ensure icon visibility */
       border-radius: var(--nashtech-radius-lg);
       color: var(--nashtech-white);
       box-shadow: var(--nashtech-shadow-lg);
@@ -177,7 +177,13 @@ import { AssessmentService } from '../../services/assessment.service';
 
     .welcome-icon {
       font-size: 2.5rem;
-      margin-bottom: var(--nashtech-spacing-sm);
+      /* Explicitly set width and height to match font-size for proper rendering */
+      display: block;
+      width: 2.5rem;
+      height: 2.5rem;
+      line-height: 2.5rem; /* Ensure vertical centering of the glyph */
+      /* Center the block element horizontally while retaining the bottom margin */
+      margin: 0 auto var(--nashtech-spacing-sm);
     }
 
     .welcome-title {
@@ -191,6 +197,20 @@ import { AssessmentService } from '../../services/assessment.service';
       margin: 0;
       opacity: 0.9;
       line-height: 1.4;
+    }
+
+    /* Card Header Styling */
+    .card-nashtech mat-card-title,
+    .themes-card mat-card-title {
+      font-weight: 600; /* Make title bold */
+      font-size: 1.125rem; /* Increase font size */
+      color: var(--nashtech-text-primary);
+    }
+
+    .card-nashtech mat-card-subtitle,
+    .themes-card mat-card-subtitle {
+      font-size: 0.875rem; /* Set subtitle size for contrast */
+      color: var(--nashtech-text-secondary);
     }
 
     /* Compact Info Grid */
@@ -231,6 +251,8 @@ import { AssessmentService } from '../../services/assessment.service';
     .info-icon-wrapper mat-icon {
       font-size: 1.25rem;
       color: var(--nashtech-white);
+      /* Use line-height: 1 to normalize vertical alignment within the flex container */
+      line-height: 1;
     }
 
     .info-details {
@@ -287,6 +309,8 @@ import { AssessmentService } from '../../services/assessment.service';
 
     .theme-icon {
       font-size: 1.25rem;
+      /* Normalize line-height for consistent vertical centering of emojis */
+      line-height: 1;
     }
 
     .theme-info {
@@ -327,7 +351,7 @@ import { AssessmentService } from '../../services/assessment.service';
     }
 
     .notes-text h4 {
-      font-size: 1rem;
+      font-size: 1.125rem; /* Match other card titles */
       font-weight: 600;
       color: var(--nashtech-text-primary);
       margin: 0 0 var(--nashtech-spacing-xs) 0;

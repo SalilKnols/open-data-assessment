@@ -473,7 +473,7 @@ export class AssessmentService {
     {
       id: 33,
       theme: 'strategic-oversight',
-      question: 'How is the organisation's asset catalogue created and maintained?',
+      question: "How is the organisation's asset catalogue created and maintained?",
       type: 'rating',
       options: [
         '1. Initial - No systematic asset cataloguing',
@@ -776,5 +776,23 @@ export class AssessmentService {
   resetAssessment(): void {
     localStorage.removeItem(this.STORAGE_KEY);
     this.assessmentDataSubject.next(this.getInitialData());
+  }
+
+  /**
+   * Clear only the stored user details (leave answers and progress intact)
+   * Useful when you want the form to be empty on a fresh page load but keep answers.
+   */
+  clearUserDetails(): void {
+    const currentData = this.assessmentDataSubject.value;
+    const updatedData = { ...currentData };
+    if (updatedData.userDetails) {
+      delete (updatedData as any).userDetails;
+    }
+    this.assessmentDataSubject.next(updatedData);
+    try {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(updatedData));
+    } catch (error) {
+      console.warn('Failed to update storage when clearing user details:', error);
+    }
   }
 }
