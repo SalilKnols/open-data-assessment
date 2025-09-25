@@ -1,15 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AssessmentData, AssessmentResult, UserDetails, Answer, Question, AssessmentTheme } from '../models/assessment.model';
+import { Firestore, addDoc, collection } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AssessmentService {
-  private readonly STORAGE_KEY = 'nashtech-odi-assessment';
-
   private assessmentDataSubject = new BehaviorSubject<AssessmentData>(this.getInitialData());
   public assessmentData$ = this.assessmentDataSubject.asObservable();
+
+  private firestore: Firestore = inject(Firestore);
 
   private themes: AssessmentTheme[] = [
     {
@@ -537,9 +538,7 @@ export class AssessmentService {
     }
   ];
 
-  constructor() {
-    this.loadFromStorage();
-  }
+  constructor() {}
 
   private getInitialData(): AssessmentData {
     return {
@@ -550,30 +549,6 @@ export class AssessmentService {
     };
   }
 
-  private loadFromStorage(): void {
-    const stored = localStorage.getItem(this.STORAGE_KEY);
-    if (stored) {
-      try {
-        const data = JSON.parse(stored);
-        // Convert date strings back to Date objects
-        if (data.startTime) data.startTime = new Date(data.startTime);
-        if (data.endTime) data.endTime = new Date(data.endTime);
-        this.assessmentDataSubject.next(data);
-      } catch (error) {
-        console.warn('Failed to load assessment data from storage:', error);
-      }
-    }
-  }
-
-  private saveToStorage(): void {
-    try {
-      const data = this.assessmentDataSubject.value;
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
-    } catch (error) {
-      console.warn('Failed to save assessment data to storage:', error);
-    }
-  }
-
   setUserDetails(userDetails: UserDetails): void {
     const currentData = this.assessmentDataSubject.value;
     const updatedData = {
@@ -582,7 +557,6 @@ export class AssessmentService {
       startTime: currentData.startTime || new Date()
     };
     this.assessmentDataSubject.next(updatedData);
-    this.saveToStorage();
   }
 
   hasUserDetails(): boolean {
@@ -593,7 +567,6 @@ export class AssessmentService {
     const currentData = this.assessmentDataSubject.value;
     const updatedData = { ...currentData, currentStep: step };
     this.assessmentDataSubject.next(updatedData);
-    this.saveToStorage();
   }
 
   getCurrentStep(): number {
@@ -636,7 +609,6 @@ export class AssessmentService {
     };
 
     this.assessmentDataSubject.next(updatedData);
-    this.saveToStorage();
   }
 
   private calculateScore(selectedOption: string): number {
@@ -667,7 +639,7 @@ export class AssessmentService {
     return 'Assessment Complete';
   }
 
-  completeAssessment(): AssessmentResult {
+  async completeAssessment(): Promise<AssessmentResult> {
     const currentData = this.assessmentDataSubject.value;
 
     // Mark as completed
@@ -677,10 +649,27 @@ export class AssessmentService {
       endTime: new Date()
     };
     this.assessmentDataSubject.next(completedData);
-    this.saveToStorage();
 
     // Calculate results
-    return this.calculateResults(completedData);
+    const results = this.calculateResults(completedData);
+
+    // Save to Firestore
+    await this.saveAssessmentToFirestore(completedData, results);
+
+    return results;
+  }
+
+  private async saveAssessmentToFirestore(data: AssessmentData, results: AssessmentResult): Promise<void> {
+    try {
+      const assessmentCollection = collection(this.firestore, 'assessments');
+      await addDoc(assessmentCollection, {
+        ...data,
+        results,
+        createdAt: new Date()
+      });
+    } catch (error) {
+      console.error('Failed to save assessment to Firestore:', error);
+    }
   }
 
   private calculateResults(data: AssessmentData): AssessmentResult {
@@ -774,7 +763,6 @@ export class AssessmentService {
   }
 
   resetAssessment(): void {
-    localStorage.removeItem(this.STORAGE_KEY);
     this.assessmentDataSubject.next(this.getInitialData());
   }
 
@@ -789,10 +777,5 @@ export class AssessmentService {
       delete (updatedData as any).userDetails;
     }
     this.assessmentDataSubject.next(updatedData);
-    try {
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(updatedData));
-    } catch (error) {
-      console.warn('Failed to update storage when clearing user details:', error);
-    }
   }
 }

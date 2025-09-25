@@ -681,13 +681,14 @@ export class AssessmentComponent implements OnInit {
     }
   }
 
-  goToNext() {
+  async goToNext() {
     if (this.answerForm.valid) {
       // Save current answer
       this.saveCurrentAnswer();
 
       if (this.isLastQuestion) {
         // Complete assessment and go to results
+        await this.assessmentService.completeAssessment();
         this.router.navigate(['/results']);
       } else {
         // Go to next question

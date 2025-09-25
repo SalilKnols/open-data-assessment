@@ -460,7 +460,9 @@ export class WelcomeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.assessmentService.setCurrentStep(1);
+    if (this.assessmentService.getCurrentStep() === 0) {
+      this.assessmentService.setCurrentStep(1);
+    }
   }
 
   startAssessment() {
