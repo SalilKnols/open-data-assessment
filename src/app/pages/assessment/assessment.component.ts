@@ -23,7 +23,7 @@ import { Question, Answer } from '../../models/assessment.model';
     MatProgressBarModule
   ],
   template: `
-    <div class="assessment-container" *ngIf="currentQuestion">
+    <div class="assessment-container" *ngIf="currentQuestion && !isSubmitting">
       <div class="container">
         <div class="assessment-content fade-in">
           <!-- Compact Progress Header -->
@@ -156,12 +156,14 @@ import { Question, Answer } from '../../models/assessment.model';
     </div>
 
     <!-- Loading State -->
-    <div class="loading-container" *ngIf="!currentQuestion">
+    <div class="loading-container" *ngIf="!currentQuestion || isSubmitting">
       <div class="container">
         <div class="loading-content">
           <mat-icon class="loading-icon pulse">hourglass_empty</mat-icon>
-          <h3>Loading Assessment Questions...</h3>
-          <p>Preparing your personalized ODI framework evaluation</p>
+          <h3 *ngIf="!isSubmitting">Loading Assessment Questions...</h3>
+          <h3 *ngIf="isSubmitting">Generating Personalized Recommendations...</h3>
+          <p *ngIf="!isSubmitting">Preparing your personalized ODI framework evaluation</p>
+          <p *ngIf="isSubmitting">Our AI is analyzing your responses to provide tailored advice</p>
         </div>
       </div>
     </div>
@@ -620,6 +622,8 @@ export class AssessmentComponent implements OnInit {
   allQuestions: Question[] = [];
   answerForm: FormGroup;
 
+  isSubmitting = false;
+
   get isFirstQuestion(): boolean {
     return this.currentQuestionIndex === 1;
   }
@@ -688,8 +692,14 @@ export class AssessmentComponent implements OnInit {
 
       if (this.isLastQuestion) {
         // Complete assessment and go to results
-        await this.assessmentService.completeAssessment();
-        this.router.navigate(['/results']);
+        this.isSubmitting = true;
+        try {
+          await this.assessmentService.completeAssessment();
+          this.router.navigate(['/results']);
+        } catch (error) {
+          console.error('Error completing assessment:', error);
+          this.isSubmitting = false;
+        }
       } else {
         // Go to next question
         this.currentQuestionIndex++;

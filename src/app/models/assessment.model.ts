@@ -40,4 +40,5 @@ export interface AssessmentData {
   completed: boolean;
   startTime: Date;
   endTime?: Date;
+  results?: AssessmentResult;
 }

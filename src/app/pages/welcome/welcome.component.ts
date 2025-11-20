@@ -43,7 +43,7 @@ import { AssessmentService } from '../../services/assessment.service';
                     <mat-icon>assessment</mat-icon>
                   </div>
                   <div class="info-details">
-                    <h4>37 Official Questions</h4>
+                    <h4>47 Official Questions</h4>
                     <p>Complete ODI framework evaluation across 5 key themes</p>
                   </div>
                 </div>
@@ -129,7 +129,7 @@ import { AssessmentService } from '../../services/assessment.service';
               <mat-icon>play_arrow</mat-icon>
               Start Assessment
             </button>
-            <p class="start-note">Begin your 37-question ODI framework evaluation</p>
+            <p class="start-note">Begin your 47-question ODI framework evaluation</p>
           </div>
         </div>
       </div>

@@ -159,7 +159,7 @@ import { UserDetails } from '../../models/assessment.model';
                 <mat-icon>assessment</mat-icon>
               </div>
               <div class="info-text">
-                <h4>37 ODI Questions</h4>
+                <h4>47 ODI Questions</h4>
                 <p>Official framework evaluation</p>
               </div>
             </div>

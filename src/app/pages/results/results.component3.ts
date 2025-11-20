@@ -24,7 +24,7 @@ declare var XLSX: any;
       <div class="container">
         <div class="results-content fade-in">
 
-          <!-- Compact Results Header -->
+          <!-- Compact Results Header - ICON FIXED -->
           <div class="results-header">
             <div class="completion-badge gradient-bg">
               <mat-icon class="completion-icon">check_circle</mat-icon>
@@ -41,7 +41,7 @@ declare var XLSX: any;
               <div class="score-content">
                 <div class="score-visual">
                   <div class="score-circle">
-                    <div class="score-number">{{ getOverAllScore() }}</div>
+                    <div class="score-number">{{ getScorePercentage() }}%</div>
                     <div class="score-label">Overall Score</div>
                   </div>
                 </div>
@@ -53,6 +53,47 @@ declare var XLSX: any;
                     <h3 class="level-title">{{ getLevelDescription() }}</h3>
                     <p class="level-description">{{ getLevelExplanation() }}</p>
                   </div>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- ODI Framework Scale -->
+          <mat-card class="framework-card card-nashtech">
+            <mat-card-header>
+              <div class="framework-header">
+                <mat-icon class="framework-icon">school</mat-icon>
+                <div>
+                  <mat-card-title>ODI Maturity Framework</mat-card-title>
+                  <mat-card-subtitle>Your position on the official 5-level scale</mat-card-subtitle>
+                </div>
+              </div>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="framework-scale">
+                <div class="scale-item" [class.current-level]="results.maturityLevel === 'Beginner'">
+                  <div class="scale-number">1</div>
+                  <div class="scale-name">Initial</div>
+                </div>
+                <div class="scale-connector"></div>
+                <div class="scale-item" [class.current-level]="results.maturityLevel === 'Developing'">
+                  <div class="scale-number">2</div>
+                  <div class="scale-name">Repeatable</div>
+                </div>
+                <div class="scale-connector"></div>
+                <div class="scale-item" [class.current-level]="results.maturityLevel === 'Advanced'">
+                  <div class="scale-number">3</div>
+                  <div class="scale-name">Defined</div>
+                </div>
+                <div class="scale-connector"></div>
+                <div class="scale-item" [class.current-level]="results.maturityLevel === 'Leading'">
+                  <div class="scale-number">4</div>
+                  <div class="scale-name">Managed</div>
+                </div>
+                <div class="scale-connector"></div>
+                <div class="scale-item" [class.current-level]="results.maturityLevel === 'Optimizing'">
+                  <div class="scale-number">5</div>
+                  <div class="scale-name">Optimising</div>
                 </div>
               </div>
             </mat-card-content>
@@ -96,30 +137,6 @@ declare var XLSX: any;
             </mat-card-content>
           </mat-card>
 
-          <!-- Recommendations Card -->
-          <mat-card class="recommendations-card card-nashtech">
-            <mat-card-header>
-              <div class="recommendations-header">
-                <mat-icon class="recommendations-icon">lightbulb</mat-icon>
-                <div>
-                  <mat-card-title>Recommendations</mat-card-title>
-                  <mat-card-subtitle>Personalized actions to improve your open data maturity</mat-card-subtitle>
-                </div>
-              </div>
-            </mat-card-header>
-            <mat-card-content>
-              <div class="recommendations-list">
-                <div 
-                  *ngFor="let recommendation of results.recommendations; let i = index" 
-                  class="recommendation-item">
-                  <div class="recommendation-number">{{ i + 1 }}</div>
-                  <div class="recommendation-text">{{ recommendation }}</div>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
-
-
           <!-- Assessment Summary -->
           <mat-card class="summary-card card-nashtech-accent">
             <mat-card-header>
@@ -152,7 +169,7 @@ declare var XLSX: any;
                   <mat-icon class="summary-icon">quiz</mat-icon>
                   <div class="summary-info">
                     <div class="summary-label">Questions Completed</div>
-                    <div class="summary-value">{{ assessmentData.answers.length }}/47</div>
+                    <div class="summary-value">{{ assessmentData.answers.length }}/37</div>
                   </div>
                 </div>
               </div>
@@ -164,10 +181,18 @@ declare var XLSX: any;
             <button 
               mat-raised-button 
               color="primary"
-              (click)="downloadPdfReport()"
+              (click)="downloadExcelReport()"
               class="action-button primary-action">
-              <mat-icon>picture_as_pdf</mat-icon>
-              Download PDF Report
+              <mat-icon>file_download</mat-icon>
+              Download Excel Report
+            </button>
+
+            <button 
+              mat-outlined-button
+              (click)="retakeAssessment()"
+              class="action-button">
+              <mat-icon>refresh</mat-icon>
+              Retake Assessment
             </button>
 
             <button 
@@ -226,7 +251,7 @@ declare var XLSX: any;
       margin: 0 auto;
     }
 
-    /* Results Header */
+    /* FIXED Results Header */
     .results-header {
       text-align: center;
       margin-bottom: var(--nashtech-spacing-md);
@@ -258,6 +283,7 @@ declare var XLSX: any;
       z-index: 0;
     }
 
+    /* FIXED Completion Icon */
     .completion-icon {
       font-size: 80px !important;
       width: 80px !important;
@@ -276,13 +302,17 @@ declare var XLSX: any;
     .results-title {
       font-size: 1.875rem;
       font-weight: 700;
-      margin: 0 0 var(--nashtech-spacing-xs) 0;
+      margin: 0;
+      position: relative;
+      z-index: 1;
     }
 
     .results-subtitle {
       font-size: 1rem;
       margin: 0;
-      opacity: 0.9;
+      opacity: 0.95;
+      position: relative;
+      z-index: 1;
     }
 
     /* Score Card */
@@ -330,79 +360,6 @@ declare var XLSX: any;
 
     .score-info {
       flex: 1;
-    }
-
-        /* Recommendations Card */
-    .recommendations-card {
-      border: none;
-      box-shadow: var(--nashtech-shadow-md);
-    }
-
-    .recommendations-header {
-      display: flex;
-      align-items: center;
-      gap: var(--nashtech-spacing-sm);
-    }
-
-    .recommendations-icon {
-      color: var(--nashtech-primary);
-      font-size: 1.5rem;
-    }
-
-    .recommendations-list {
-      display: flex;
-      flex-direction: column;
-      gap: var(--nashtech-spacing-md);
-    }
-
-    .recommendation-item {
-      display: flex;
-      align-items: flex-start;
-      gap: var(--nashtech-spacing-md);
-      padding: var(--nashtech-spacing-md);
-      background: var(--nashtech-bg-secondary);
-      border-radius: var(--nashtech-radius-md);
-      border-left: 3px solid var(--nashtech-primary);
-      transition: all 0.3s ease;
-    }
-
-    .recommendation-item:hover {
-      background: var(--nashtech-white);
-      box-shadow: var(--nashtech-shadow-sm);
-      transform: translateX(4px);
-    }
-
-    .recommendation-number {
-      width: 2rem;
-      height: 2rem;
-      border-radius: 50%;
-      background: var(--nashtech-primary);
-      color: var(--nashtech-white);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 0.9375rem;
-      flex-shrink: 0;
-    }
-
-    .recommendation-text {
-      flex: 1;
-      font-size: 0.9375rem;
-      line-height: 1.6;
-      color: var(--nashtech-text-primary);
-    }
-
-    @media (max-width: 768px) {
-      .recommendation-item {
-        flex-direction: column;
-        text-align: center;
-        gap: var(--nashtech-spacing-sm);
-      }
-
-      .recommendation-number {
-        margin: 0 auto;
-      }
     }
 
     .level-badge {
@@ -739,10 +696,33 @@ declare var XLSX: any;
       margin: 0;
     }
 
+    /* FIXED Animation */
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.05);
+        opacity: 0.9;
+      }
+    }
+
     /* Responsive Design */
     @media (max-width: 768px) {
       .results-title {
         font-size: 1.625rem;
+      }
+
+      .completion-badge {
+        padding: var(--nashtech-spacing-lg);
+        gap: var(--nashtech-spacing-sm);
+      }
+
+      .completion-icon {
+        font-size: 60px !important;
+        width: 60px !important;
+        height: 60px !important;
       }
 
       .score-content {
@@ -796,33 +776,45 @@ declare var XLSX: any;
         gap: var(--nashtech-spacing-sm);
       }
     }
+
+    @media (max-width: 480px) {
+      .completion-icon {
+        font-size: 50px !important;
+        width: 50px !important;
+        height: 50px !important;
+      }
+
+      .results-title {
+        font-size: 1.5rem;
+      }
+    }
   `]
 })
 export class ResultsComponent implements OnInit, OnDestroy {
   results: AssessmentResult | null = null;
   assessmentData: AssessmentData | null = null;
-  countdown = 1000;
+  countdown = 10;
   private countdownInterval?: any;
 
   constructor(
     private router: Router,
     private assessmentService: AssessmentService
-  ) { }
+  ) {}
 
-  ngOnInit() {
-    // Load XLSX library
+  async ngOnInit() {
     this.loadXLSXLibrary();
 
-    this.assessmentService.assessmentData$.subscribe(data => {
+    this.assessmentService.assessmentData$.subscribe(async data => {
       this.assessmentData = data;
 
-      if (data.results) {
-        this.results = data.results;
-        this.startCountdown();
-      } else if (data.answers.length === 47) {
-        // If we have answers but no results, it means completeAssessment wasn't called or finished.
-        // Redirect back to assessment to finish submission
-        this.router.navigate(['/assessment']);
+      if (data.answers.length === 37) {
+        try {
+          this.results = await this.assessmentService.completeAssessment();
+          this.startCountdown();
+        } catch (error) {
+          console.error('Error completing assessment:', error);
+          this.router.navigate(['/assessment']);
+        }
       } else {
         this.router.navigate(['/assessment']);
       }
@@ -852,15 +844,14 @@ export class ResultsComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  getOverAllScore(): number {
+  getScorePercentage(): number {
     if (!this.results) return 0;
-    return parseFloat(this.results.overallScore.toFixed(2));
+    return Math.round((this.results.overallScore / 5) * 100);
   }
-
 
   getLevelDescription(): string {
     if (!this.results) return '';
-    const descriptions = {
+    const descriptions: { [key: string]: string } = {
       'Beginner': 'Initial Level',
       'Developing': 'Repeatable Level',
       'Advanced': 'Defined Level',
@@ -872,7 +863,7 @@ export class ResultsComponent implements OnInit, OnDestroy {
 
   getLevelExplanation(): string {
     if (!this.results) return '';
-    const explanations = {
+    const explanations: { [key: string]: string } = {
       'Beginner': 'Your organization is at the Initial level. Focus on establishing foundational processes.',
       'Developing': 'Your organization shows Repeatable practices. Work on standardizing approaches.',
       'Advanced': 'Your organization has Defined processes. Continue optimizing and scaling.',
@@ -932,7 +923,6 @@ export class ResultsComponent implements OnInit, OnDestroy {
 
       const workbook = XLSX.utils.book_new();
 
-      // Summary sheet
       const summaryData = [
         ['NashTech Open Data Maturity Assessment Report'],
         ['Generated:', new Date().toLocaleDateString()],
@@ -942,7 +932,7 @@ export class ResultsComponent implements OnInit, OnDestroy {
         ['Organization:', this.assessmentData.userDetails?.organization || 'N/A'],
         [],
         ['RESULTS'],
-        ['Overall Score:', `${this.getOverAllScore()} (${this.results.overallScore.toFixed(2)}/5.0)`],
+        ['Overall Score:', `${this.getScorePercentage()}% (${this.results.overallScore.toFixed(1)}/5.0)`],
         ['Maturity Level:', `${this.results.maturityLevel} (${this.getLevelDescription()})`],
         [],
         ['THEME SCORES'],
@@ -970,80 +960,10 @@ export class ResultsComponent implements OnInit, OnDestroy {
     }
   }
 
-  async downloadPdfReport() {
-    if (!this.results || !this.assessmentData) return;
-
-    try {
-      const jsPDF = (await import('jspdf')).default;
-      const autoTable = (await import('jspdf-autotable')).default;
-
-      const doc = new jsPDF();
-      const pageWidth = doc.internal.pageSize.width;
-
-      // Header
-      doc.setFillColor(230, 81, 0); // NashTech Orange
-      doc.rect(0, 0, pageWidth, 20, 'F');
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(16);
-      doc.text('NashTech Open Data Maturity Assessment', 14, 13);
-
-      // User Details
-      doc.setTextColor(0, 0, 0);
-      doc.setFontSize(12);
-      doc.text('Assessment Report', 14, 30);
-
-      doc.setFontSize(10);
-      doc.text(`Participant: ${this.assessmentData.userDetails?.fullName || 'N/A'}`, 14, 40);
-      doc.text(`Organization: ${this.assessmentData.userDetails?.organization || 'N/A'}`, 14, 45);
-      doc.text(`Date: ${new Date().toLocaleDateString()}`, 14, 50);
-
-      // Results Summary
-      doc.setFontSize(12);
-      doc.text('Results Summary', 14, 65);
-
-      doc.setFontSize(10);
-      doc.text(`Overall Score: ${this.getOverAllScore()} / 5.0`, 14, 75);
-      doc.text(`Maturity Level: ${this.results.maturityLevel}`, 14, 80);
-
-      // Theme Scores
-      let yPos = 90;
-      this.getThemesWithScores().forEach(theme => {
-        doc.text(`${theme.title}: ${this.getThemeScore(theme.id)} (${this.getThemeScorePercentage(theme.id)}%)`, 14, yPos);
-        yPos += 5;
-      });
-
-      // Questions & Answers Table
-      const tableData = this.assessmentData.answers.map(answer => {
-        const question = this.assessmentService.getQuestions().find(q => q.id === answer.questionId);
-        return [
-          question?.theme || '',
-          question?.question || '',
-          answer.selectedOption,
-          answer.score.toString()
-        ];
-      });
-
-      autoTable(doc, {
-        startY: yPos + 10,
-        head: [['Theme', 'Question', 'Answer', 'Score']],
-        body: tableData,
-        headStyles: { fillColor: [230, 81, 0] },
-        columnStyles: {
-          0: { cellWidth: 25 },
-          1: { cellWidth: 80 },
-          2: { cellWidth: 60 },
-          3: { cellWidth: 15, halign: 'center' }
-        },
-        styles: { fontSize: 8, overflow: 'linebreak' }
-      });
-
-      // Save
-      const fileName = `ODI-Assessment-${this.assessmentData.userDetails?.organization?.replace(/[^a-zA-Z0-9]/g, '') || 'Report'}.pdf`;
-      doc.save(fileName);
-
-    } catch (error) {
-      console.error('PDF Export failed:', error);
-      alert('Failed to generate PDF report. Please try again.');
+  retakeAssessment() {
+    if (confirm('Retake the assessment? This will reset your answers.')) {
+      this.assessmentService.resetAssessment();
+      this.router.navigate(['/user-details']);
     }
   }
 
