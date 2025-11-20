@@ -91,19 +91,3 @@ The export applies simple formatting, automated file naming, and basic validatio
 - SCSS for styling
 
 Performance considerations include route-based lazy loading and OnPush change detection where appropriate.
-
-## Contributing and Support
-
-To run the app locally:
-
-- Use `ng serve` from the project root
-- Edit or extend the assessment questions and configuration under `src/app`
-- The Excel export logic is implemented in `src/app/services/assessment.service.ts`
-
-## Resources
-
-- Open Data Institute: https://theodi.org
-
----
-
-If you want a shorter introduction, a different tone, or more examples of the exported Excel layout, tell me how you'd like it adjusted.
