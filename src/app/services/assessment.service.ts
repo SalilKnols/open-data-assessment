@@ -92,7 +92,7 @@ export class AssessmentService {
         '4. Managed - Archived versions of key datasets are maintained to support historical analysis and comparisons.',
         '5. Optimising - Reports provide insights into dataset sustainability, highlighting stale datasets and emerging risks.'
       ],
-      tip: "Stale data loses value. **Initial:** Rare updates. **Defined:** Reguar published timetable. **Managed:** Historical archives maintained. **Optimising:** Automated sustainability reports."
+      tip: "Stale data loses value. **Initial/Repeatable:** Rare/Scheduled updates. **Defined:** Regular published timetable. **Managed:** Historical archives maintained. **Optimising:** Automated sustainability reports."
     },
 
     // Sub-theme: Standards development and adoption (4 questions)
@@ -108,7 +108,7 @@ export class AssessmentService {
         '4. Managed - All datasets are released in full conformance with the organisation\'s technical standards.',
         '5. Optimising - The organisation monitors technology trends to ensure datasets are released according to evolving standards and best practices.'
       ],
-      tip: "Standards ensure interoperability. **Initial:** No standards. **Defined:** Key technical standards defined. **Managed:** Full conformance for all datasets. **Optimising:** Evolving with tech trends."
+      tip: "Standards ensure interoperability. **Initial/Repeatable:** No standards/Specific team standards. **Defined:** Key technical standards defined. **Managed:** Full conformance for all datasets. **Optimising:** Evolving with tech trends."
     },
     {
       id: 6,
@@ -122,7 +122,7 @@ export class AssessmentService {
         '4. Managed - Datasets are released in open, non-proprietary formats (eg CSV, JSON) and include well-structured metadata.',
         '5. Optimising - Datasets are formatted to be AI/ML-ready, following advanced standards for machine readability.'
       ],
-      tip: "Format matters. **Initial:** PDFs/Images. **Repeatable:** Excel/CSV. **Defined:** Standardized headers. **Managed:** Open formats (JSON/CSV) with metadata. **Optimising:** Machine-readable & AI-ready."
+      tip: "Format matters. **Initial:** PDFs/Images. **Repeatable:** Excel/CSV. **Defined:** Standardised headers. **Managed:** Open formats (JSON/CSV) with metadata. **Optimising:** Machine-readable & AI-ready."
     },
     {
       id: 7,
@@ -150,7 +150,7 @@ export class AssessmentService {
         '4. Managed - The organisation has a strategic approach for managing data standards and is beginning to adopt open standards.',
         '5. Optimising - The organisation optimises its data standards management process by monitoring new technologies and ensuring compatibility with emerging use cases such as AI/ML.'
       ],
-      tip: "How do you pick standards? **Initial:** No process. **Defined:** Formal process followed consistently. **Managed:** Strategic approach. **Optimising:** Proactive scan for new tech/AI needs."
+      tip: "How do you pick standards? **Initial/Repeatable:** No process/Internal priorities. **Defined:** Formal process followed consistently. **Managed:** Strategic approach. **Optimising:** Proactive scan for new tech/AI needs."
     },
 
     // Sub-theme: Data management and governance (4 questions)
@@ -180,7 +180,7 @@ export class AssessmentService {
         '4. Managed - Ownership is clearly documented for all datasets and regularly reviewed to ensure accountability throughout the data lifecycle.',
         '5. Optimising - Ownership structures are fully integrated into the organisation\'s data governance framework, ensuring that changes in ownership or responsibility are automatically tracked and updated.'
       ],
-      tip: "Clear responsibility prevents decay. **Initial:** Unknown. **Defined:** Each dataset has an owner. **Managed:** Documented & reviewed. **Optimising:** Integrated into governance & automated tracking."
+      tip: "Clear responsibility prevents decay. **Initial/Repeatable:** Unknown/Informal. **Defined:** Each dataset has an owner. **Managed:** Documented & reviewed. **Optimising:** Integrated into governance & automated tracking."
     },
     {
       id: 11,
@@ -208,7 +208,7 @@ export class AssessmentService {
         '4. Managed - The open data governance framework is applied to all datasets, ensuring consistent practices and monitoring.',
         '5. Optimising - The organisation continuously improves its open data governance, incorporating feedback from reusers and monitoring the impact of its data releases.'
       ],
-      tip: "Governance sets the rules. **Initial:** None. **Defined:** Framework for key datasets. **Managed:** Framework for *all* datasets. **Optimising:** Feedback-driven evolution."
+      tip: "Governance sets the rules. **Initial/Repeatable:** None/Informal. **Defined:** Framework for key datasets. **Managed:** Framework for *all* datasets. **Optimising:** Feedback-driven evolution."
     },
 
     // Sub-theme: Compliance and risk (5 questions)
@@ -224,7 +224,7 @@ export class AssessmentService {
         '4. Managed - Risk management is fully integrated into the data governance process. All datasets undergo a risk assessment before publication, and mitigation strategies such as anonymisation and aggregation are employed where needed.',
         '5. Optimising - The organisation has a comprehensive risk management framework in place, including advanced Privacy Enhancing Technologies (PETs) and external validation for high-risk datasets. The process is transparent and linked to published risk registers.'
       ],
-      tip: "Risk management is vital. **Initial:** Ad hoc. **Defined:** Mitigation processes defined. **Managed:** Integrated into governance; all datasets assessed. **Optimising:** Advanced PETs & external validation."
+      tip: "Risk management is vital. **Initial/Repeatable:** Ad hoc & informal. **Defined:** Mitigation processes defined. **Managed:** Integrated into governance; all datasets assessed. **Optimising:** Advanced PETs & external validation."
     },
     {
       id: 14,
@@ -238,7 +238,7 @@ export class AssessmentService {
         '4. Managed - All datasets containing personal or sensitive information are subject to strict anonymisation or aggregation processes, with advanced techniques used for de-identification. Personal data is released only when fully compliant with legal frameworks.',
         '5. Optimising - The organisation employs cutting-edge techniques for safeguarding personal data, including the use of Privacy Enhancing Technologies (PETs) and routinely monitors new privacy risks. A published open data triage process is in place and includes full transparency on how personal data is handled.'
       ],
-      tip: "Protecting privacy is non-negotiable. **Initial:** Ad hoc removal. **Defined:** Standard anonymisation processes. **Managed:** Strict aggregation & de-identification. **Optimising:** Cutting-edge privacy tech (PETs) & transparent triage."
+      tip: "Protecting privacy is non-negotiable. **Initial/Repeatable:** Ad hoc removal/Informal checks. **Defined:** Standard anonymisation processes. **Managed:** Strict aggregation & de-identification. **Optimising:** Cutting-edge privacy tech (PETs) & transparent triage."
     },
     {
       id: 15,
@@ -252,7 +252,7 @@ export class AssessmentService {
         '4. Managed - Ethics is embedded into the data governance process, with routine evaluations of the ethical implications of data releases. Feedback loops are established to address any ethical concerns raised by stakeholders or reusers.',
         '5. Optimising - The organisation takes a proactive approach to ethics, regularly reviewing and updating its ethical guidelines. Ethics is treated on par with legal compliance, and the organisation considers the long-term societal impact of its data releases, including the ethical implications of AI/ML use cases.'
       ],
-      tip: "Ethics goes beyond law. **Initial:** Ad hoc. **Defined:** Standard process for consequences. **Managed:** Ethics embedded in governance. **Optimising:** Proactive reviews, including AI implications."
+      tip: "Ethics goes beyond law. **Initial/Repeatable:** Ad hoc/Awareness only. **Defined:** Standard process for consequences. **Managed:** Ethics embedded in governance. **Optimising:** Proactive reviews, including AI implications."
     },
     {
       id: 16,
@@ -266,7 +266,7 @@ export class AssessmentService {
         '4. Managed - The organisation routinely monitors compliance with international standards and legal frameworks, and has processes in place to ensure compliance across all datasets.',
         '5. Optimising - The organisation actively monitors the changing regulatory landscape and ensures that all datasets comply with the most up-to-date standards and legal requirements. Compliance is externally validated where necessary.'
       ],
-      tip: "Laws change. **Initial:** Ad hoc compliance. **Defined:** Processes for high-value data. **Managed:** Routine monitoring & compliance for *all* data. **Optimising:** Active regulatory monitoring & external validation."
+      tip: "Laws change. **Initial/Repeatable:** Ad hoc compliance/Informal. **Defined:** Processes for high-value data. **Managed:** Routine monitoring & compliance for *all* data. **Optimising:** Active regulatory monitoring & external validation."
     },
     {
       id: 17,
@@ -280,7 +280,7 @@ export class AssessmentService {
         '4. Managed - A comprehensive risk register is published and regularly updated, with detailed mitigation strategies for each dataset. The organisation is transparent about how risks are assessed and managed.',
         '5. Optimising - The organisation\'s risk management process is fully transparent, with regular updates to the risk register and the inclusion of feedback from external stakeholders. The risk register is linked to the organisation\'s open data triage process and is accessible to the public.'
       ],
-      tip: "Transparency builds trust. **Initial:** No register. **Defined:** Published register for key data. **Managed:** Comprehensive, updated register. **Optimising:** Fully transparent & public process."
+      tip: "Transparency builds trust. **Initial/Repeatable:** No register/Internal only. **Defined:** Published register for key data. **Managed:** Comprehensive, updated register. **Optimising:** Fully transparent & public process."
     },
 
     // ========================================
@@ -300,7 +300,7 @@ export class AssessmentService {
         '4. Managed - There is a centralised open data team or network of experts, with clear roles and responsibilities defined across teams to support open data initiatives.',
         '5. Optimising - The organisation fosters open data expertise across all levels, including external networks and partnerships that advance open data practices globally.'
       ],
-      tip: "Don't rely on one hero. **Initial:** Ad hoc. **Defined:** Centralised experts. **Managed:** Official central team/network. **Optimising:** Expertise fostered at *all* levels & externally."
+      tip: "Don't rely on one hero. **Initial/Repeatable:** Ad hoc/Embedded professionals. **Defined:** Centralised experts. **Managed:** Official central team/network. **Optimising:** Expertise fostered at *all* levels & externally."
     },
     {
       id: 19,
@@ -330,7 +330,7 @@ export class AssessmentService {
         '4. Managed - The organisation conducts a structured learning needs analysis on a regular basis, identifying gaps in data literacy and aligning them with strategic objectives.',
         '5. Optimising - The organisation continuously evaluates data literacy needs, aligning them with future business needs, and tracks how learning impacts organisational performance.'
       ],
-      tip: "Know what you need. **Initial:** Unknown. **Defined:** Analysis done once. **Managed:** Regular structured analysis. **Optimising:** Continuous evaluation aligned with strategy."
+      tip: "Know what you need. **Initial/Repeatable:** Unknown/Individual. **Defined:** Analysis done once. **Managed:** Regular structured analysis. **Optimising:** Continuous evaluation aligned with strategy."
     },
     {
       id: 21,
@@ -360,7 +360,7 @@ export class AssessmentService {
         '4. Managed - Data literacy and skills are embedded into performance reviews, and the organisation actively drives data literacy as a key strategic focus.',
         '5. Optimising - The organisation continuously aligns its data literacy and skills development with broader strategic objectives, tracking KPIs and regularly adjusting its approach to meet future business needs.'
       ],
-      tip: "Align skills with strategy. **Initial:** No. **Defined:** Generic training. **Managed:** Embedded in reviews & strategy. **Optimising:** KPIs tracked & adjusted for future needs."
+      tip: "Align skills with strategy. **Initial/Repeatable:** No/Tool-specific. **Defined:** Generic training. **Managed:** Embedded in reviews & strategy. **Optimising:** KPIs tracked & adjusted for future needs."
     },
     {
       id: 23,
@@ -374,7 +374,7 @@ export class AssessmentService {
         '4. Managed - There is a clear support structure in place for teams with limited data expertise, including access to mentors, training programmes, and centrally managed data teams.',
         '5. Optimising - The organisation provides tailored, continuous support to teams with limited data expertise, ensuring they are fully integrated into data-driven projects and have access to the necessary skills and resources.'
       ],
-      tip: "Support the non-experts. **Initial:** None. **Defined:** Central resources. **Managed:** Mentors & clear structure. **Optimising:** Tailored, continuous support integrated into projects."
+      tip: "Support the non-experts. **Initial/Repeatable:** None/Ad-hoc resources. **Defined:** Central resources. **Managed:** Mentors & clear structure. **Optimising:** Tailored, continuous support integrated into projects."
     },
 
     // ========================================
@@ -408,7 +408,7 @@ export class AssessmentService {
         '4. Managed - The organisation\'s data release strategy is communicated clearly to stakeholders, with a repeatable process to guide engagement and publication.',
         '5. Optimising - Data release priorities are informed by continuous dialogue with the community, and the organisation monitors and adjusts its strategy based on feedback and impact assessments.'
       ],
-      tip: "Publish what users want. **Initial:** Internal drivers only. **Defined:** Response to demand. **Managed:** Clear strategy communicated. **Optimising:** Continuous dialogue & impact-based adjustments."
+      tip: "Publish what users want. **Initial/Repeatable:** Internal drivers only/External demands. **Defined:** Response to demand. **Managed:** Clear strategy communicated. **Optimising:** Continuous dialogue & impact-based adjustments."
     },
     {
       id: 26,
@@ -422,7 +422,7 @@ export class AssessmentService {
         '4. Managed - The organisation plays an active role in sector-level collaborations to advance open data practices, contributing proactively to cross-organisational efforts.',
         '5. Optimising - The organisation leads sector-level initiatives to advance open data, establishing best practices and fostering innovation through challenges, partnerships, and dedicated engagement groups.'
       ],
-      tip: "Go beyond your walls. **Initial:** Isolated. **Defined:** Engaged in efforts. **Managed:** Active contributor. **Optimising:** Leader in sector initiatives & innovation."
+      tip: "Go beyond your walls. **Initial/Repeatable:** Isolated/Ad-hoc collaboration. **Defined:** Engaged in efforts. **Managed:** Active contributor. **Optimising:** Leader in sector initiatives & innovation."
     },
 
     // Sub-theme: Reuser support processes (3 questions)
@@ -438,7 +438,7 @@ export class AssessmentService {
         '4. Managed - The organisation actively promotes its support offerings, providing clear expectations (eg response times) and fostering open communication through multiple channels (eg forums, social media).',
         '5. Optimising - The organisation measures the effectiveness of its support operations, ensuring reusers receive prompt responses and issues are addressed swiftly, using feedback to improve support processes.'
       ],
-      tip: "Be responsive. **Initial:** Ad hoc. **Defined:** Central contact point. **Managed:** Active promotion & clear SLAs. **Optimising:** Measured effectiveness & swift resolution."
+      tip: "Be responsive. **Initial/Repeatable:** Ad hoc/Some access. **Defined:** Central contact point. **Managed:** Active promotion & clear SLAs. **Optimising:** Measured effectiveness & swift resolution."
     },
     {
       id: 28,
@@ -452,7 +452,7 @@ export class AssessmentService {
         '4. Managed - Reusers\' feedback is routinely captured, analysed, and used to drive improvements in datasets and support processes.',
         '5. Optimising - Feedback collection is embedded into the organisation\'s processes, and the organisation routinely collaborates with reusers to enhance the quality and usefulness of its datasets and support services.'
       ],
-      tip: "Listen to users. **Initial:** No channel. **Defined:** Formal channels exits. **Managed:** Routine analysis. **Optimising:** Embedded collaboration for improvement."
+      tip: "Listen to users. **Initial/Repeatable:** No channel/Ad-hoc. **Defined:** Formal channels exist. **Managed:** Routine analysis. **Optimising:** Embedded collaboration for improvement."
     },
     {
       id: 29,
@@ -482,7 +482,7 @@ export class AssessmentService {
         '4. Managed - All datasets are released with a standard set of supporting documentation and metadata using established templates.',
         '5. Optimising - The organisation routinely provides comprehensive documentation and high-quality metadata for all datasets.'
       ],
-      tip: "Documentation is key. **Initial:** Little/none. **Defined:** Standard templates for some data. **Managed:** Standard for *all* data. **Optimising:** Comprehensive & high-quality for all."
+      tip: "Documentation is key. **Initial/Repeatable:** Little/Inconsistent. **Defined:** Standard templates for some data. **Managed:** Standard for *all* data. **Optimising:** Comprehensive & high-quality for all."
     },
     {
       id: 31,
@@ -496,7 +496,7 @@ export class AssessmentService {
         '4. Managed - All datasets conform to an established documentation process, and this process is integrated into the data publishing workflow.',
         '5. Optimising - Supporting documentation and metadata creation are fully integrated into the publishing process and regularly reviewed for consistency.'
       ],
-      tip: "Apply standards. **Initial:** Inconsistent. **Defined:** Standard approach exists. **Managed:** Integrated process. **Optimising:** Fully integrated & reviewed for consistency."
+      tip: "Apply standards. **Initial/Repeatable:** Inconsistent/Some templates. **Defined:** Standard approach exists. **Managed:** Integrated process. **Optimising:** Fully integrated & reviewed for consistency."
     },
     {
       id: 32,
@@ -510,7 +510,7 @@ export class AssessmentService {
         '4. Managed - The organisation actively seeks feedback from reusers on documentation, and improvements are regularly made based on their input.',
         '5. Optimising - Reusers are encouraged to contribute to the improvement of documentation, and the organisation promotes the use of third-party resources and tools to supplement its documentation.'
       ],
-      tip: "Improve with help. **Initial:** Ad hoc. **Defined:** Formal process. **Managed:** Active solicitation. **Optimising:** Community contributions encouraged."
+      tip: "Improve with help. **Initial/Repeatable:** Ad hoc/Informal feedback. **Defined:** Formal process. **Managed:** Active solicitation. **Optimising:** Community contributions encouraged."
     },
 
     // ========================================
@@ -530,7 +530,7 @@ export class AssessmentService {
         '4. Managed - The organisation actively monitors the financial costs and benefits of open data publication as part of ongoing data governance processes.',
         '5. Optimising - The organisation seeks efficiency savings and sustainability strategies in open data publication, optimising data management and reducing licensing overheads where possible.'
       ],
-      tip: "Plan the costs. **Initial:** Ad hoc. **Defined:** Long-term costs in funding. **Managed:** Active cost/benefit monitoring. **Optimising:** Efficiency savings & sustainability strategies."
+      tip: "Plan the costs. **Initial/Repeatable:** Ad hoc/Project budget. **Defined:** Long-term costs in funding. **Managed:** Active cost/benefit monitoring. **Optimising:** Efficiency savings & sustainability strategies."
     },
     {
       id: 34,
@@ -544,7 +544,7 @@ export class AssessmentService {
         '4. Managed - Sustainability planning is integrated into the organisation\'s data governance, ensuring consistent funding and updates for high-value datasets.',
         '5. Optimising - The organisation actively seeks external partnerships or additional funding streams to ensure the long-term sustainability of open data.'
       ],
-      tip: "Secure the future. **Initial:** Short-term. **Defined:** Budgeting for updates. **Managed:** Integrated into governance. **Optimising:** External partnerships & funding streams."
+      tip: "Secure the future. **Initial/Repeatable:** Short-term/Project funding. **Defined:** Budgeting for updates. **Managed:** Integrated into governance. **Optimising:** External partnerships & funding streams."
     },
     {
       id: 35,
@@ -558,7 +558,7 @@ export class AssessmentService {
         '4. Managed - The organisation includes standard clauses in contracts and procurement activities to ensure clarity around data rights and reuse.',
         '5. Optimising - All procurement processes and contracts include explicit reference to open data rights and reuse where applicable, and these are standard across all projects.'
       ],
-      tip: "Buy wisely. **Initial:** Not considered. **Defined:** Used in some contracts. **Managed:** Standard clauses. **Optimising:** Explicit reference to open data rights in *all* contracts."
+      tip: "Buy wisely. **Initial/Repeatable:** Not considered/Retrospective. **Defined:** Used in some contracts. **Managed:** Standard clauses. **Optimising:** Explicit reference to open data rights in *all* contracts."
     },
     {
       id: 36,
@@ -572,7 +572,7 @@ export class AssessmentService {
         '4. Managed - The organisation has an established process for ensuring that rights to release and reuse data are clear in all contracts and partnerships.',
         '5. Optimising - Rights management for open data is fully integrated into all procurement and partnership processes, ensuring clarity from the outset for all contracts.'
       ],
-      tip: "Define your rights. **Initial:** Unclear. **Defined:** Clear processes. **Managed:** Established process for clarity. **Optimising:** Fully integrated into procurement."
+      tip: "Define your rights. **Initial/Repeatable:** Unclear/Retrospective. **Defined:** Clear processes. **Managed:** Established process for clarity. **Optimising:** Fully integrated into procurement."
     },
 
     // Sub-theme: Understanding the value of open data (2 questions)
@@ -588,7 +588,7 @@ export class AssessmentService {
         '4. Managed - The organisation has adopted a standardised approach for describing the value of its datasets, including quantitative methods for measuring ROI.',
         '5. Optimising - All datasets are consistently valued using standard methods, with the valuation used to guide strategic investment decisions.'
       ],
-      tip: "Value the asset. **Initial:** Not valued. **Defined:** Retrospective/qualitative. **Managed:** Standardised/quantitative (ROI). **Optimising:** Standard methods guiding investment."
+      tip: "Value the asset. **Initial/Repeatable:** Not valued/Qualitative. **Defined:** Retrospective/qualitative. **Managed:** Standardised/quantitative (ROI). **Optimising:** Standard methods guiding investment."
     },
     {
       id: 38,
@@ -602,7 +602,7 @@ export class AssessmentService {
         '4. Managed - The organisation regularly publishes detailed reports on the value of its open data, including case studies, known reuses, and stakeholder feedback.',
         '5. Optimising - Reports are strategic and transparent, guiding future data releases and aligning with stakeholder needs. Feedback loops are established for ongoing improvement.'
       ],
-      tip: "Show the value. **Initial:** Ad hoc. **Undefined:** Periodic reports. **Managed:** Detailed published reports. **Optimising:** Strategic, transparent & guiding future releases."
+      tip: "Show the value. **Initial/Repeatable:** Ad hoc/Qualitative. **Defined:** Periodic reports. **Managed:** Detailed published reports. **Optimising:** Strategic, transparent & guiding future releases."
     },
 
     // ========================================
@@ -622,7 +622,7 @@ export class AssessmentService {
         '4. Managed - The organisation has an open data strategy that is aligned with wider organisational goals and is supported by measurable targets for implementation.',
         '5. Optimising - Open data is a critical component of the organisation\'s overall strategy, and it is continuously reviewed to ensure alignment with evolving goals.'
       ],
-      tip: "Have a plan. **Initial:** None. **Repeatable:** Departmental. **Defined:** Documented strategy. **Managed:** Aligned with org goals. **Optimising:** Critical component of overall strategy."
+      tip: "Have a plan. **Initial/Repeatable:** None/Departmental. **Defined:** Documented strategy. **Managed:** Aligned with org goals. **Optimising:** Critical component of overall strategy."
     },
     {
       id: 40,
@@ -636,7 +636,7 @@ export class AssessmentService {
         '4. Managed - Senior management is fully engaged, and performance assessment of key executives is tied to the delivery of the open data strategy.',
         '5. Optimising - There is broad organisational ownership of the open data strategy, with clear roles and responsibilities for its ongoing evolution and delivery.'
       ],
-      tip: "Lead from the top. **Initial:** None. **Defined:** Senior management assigned. **Managed:** Performance tied to delivery. **Optimising:** Broad ownership & clear roles."
+      tip: "Lead from the top. **Initial/Repeatable:** None/Project teams. **Defined:** Senior management assigned. **Managed:** Performance tied to delivery. **Optimising:** Broad ownership & clear roles."
     },
     {
       id: 41,
@@ -650,7 +650,7 @@ export class AssessmentService {
         '4. Managed - The organisation tracks the performance of the open data strategy through defined metrics that are aligned with organisational objectives.',
         '5. Optimising - Metrics and goals are regularly reviewed and updated, ensuring alignment with organisational priorities and driving continuous improvement.'
       ],
-      tip: "Set targets. **Initial:** None. **Defined:** Measurable targets. **Managed:** Performance tracked against strategy. **Optimising:** Metrics reviewed & updated driving improvement."
+      tip: "Set targets. **Initial/Repeatable:** None/Some benefits. **Defined:** Measurable targets. **Managed:** Performance tracked against strategy. **Optimising:** Metrics reviewed & updated driving improvement."
     },
 
     // Sub-theme: Asset catalogue (4 questions)
@@ -666,7 +666,7 @@ export class AssessmentService {
         '4. Managed - The catalogue is kept up to date and includes all high-value datasets across the organisation.',
         '5. Optimising - The organisation has an exhaustive asset catalogue that includes all datasets, not just high-value ones, and it is routinely maintained.'
       ],
-      tip: "List your assets. **Initial:** None. **Repeatable:** Departmental lists. **Defined:** Org-wide key datasets. **Managed:** Up-to-date high-value. **Optimising:** Exhaustive & maintained."
+      tip: "List your assets. **Initial/Repeatable:** None/Departmental lists. **Defined:** Org-wide key datasets. **Managed:** Up-to-date high-value. **Optimising:** Exhaustive & maintained."
     },
     {
       id: 43,
@@ -680,7 +680,7 @@ export class AssessmentService {
         '4. Managed - The catalogue includes all datasets that are used or published by the organisation, and there is a formal process in place for ensuring it is regularly updated.',
         '5. Optimising - The asset catalogue is managed comprehensively, and its upkeep is fully integrated into the organisation\'s data management strategy, with clear accountability.'
       ],
-      tip: "Maintain the list. **Initial:** Ad hoc. **Defined:** Gaps exist. **Managed:** All datasets included & process for updates. **Optimising:** Comprehensive & fully integrated."
+      tip: "Maintain the list. **Initial/Repeatable:** Ad hoc/Teams manage own. **Defined:** Gaps exist. **Managed:** All datasets included & process for updates. **Optimising:** Comprehensive & fully integrated."
     },
     {
       id: 44,
@@ -694,7 +694,7 @@ export class AssessmentService {
         '4. Managed - The catalogue is a critical resource for project planning, and the organisation strives for efficiency by reusing existing datasets whenever possible.',
         '5. Optimising - The organisation actively identifies overlaps and commonalities between datasets in the catalogue, achieving cost and efficiency savings by aligning or consolidating datasets.'
       ],
-      tip: "Avoid duplication. **Initial:** None. **Defined:** Some reuse. **Managed:** Planning resource. **Optimising:** Active consolidation & efficiency savings."
+      tip: "Avoid duplication. **Initial/Repeatable:** None/Inconsistent. **Defined:** Some reuse. **Managed:** Planning resource. **Optimising:** Active consolidation & efficiency savings."
     },
     {
       id: 45,
@@ -708,7 +708,7 @@ export class AssessmentService {
         '4. Managed - The asset catalogue is regularly published and includes details about datasets that have not yet been released to help external users understand upcoming resources.',
         '5. Optimising - The organisation publishes its entire asset catalogue, including metadata and descriptions, and actively engages with external stakeholders to improve the quality and relevance of the datasets it holds.'
       ],
-      tip: "Public transparency. **Initial:** Internal only. **Defined:** Some parts public. **Managed:** Scheduled publication. **Optimising:** Entire catalogue public with metadata."
+      tip: "Public transparency. **Initial/Repeatable:** Internal only/Sporadic. **Defined:** Some parts public. **Managed:** Scheduled publication. **Optimising:** Entire catalogue public with metadata."
     },
 
     // Sub-theme: Responsible data stewardship (2 questions)
@@ -724,7 +724,7 @@ export class AssessmentService {
         '4. Managed - Data stewardship responsibilities include publishing open data, securely sharing sensitive data, and building and maintaining data infrastructure.',
         '5. Optimising - The organisation has a system in place for continually assessing data stewardship responsibilities, ensuring data is used for public benefit and mitigating harm.'
       ],
-      tip: "Be a steward. **Initial:** Unknown concept. **Defined:** Public commitment. **Managed:** Publishing & sharing responsibilities. **Optimising:** System for assessing stewardship."
+      tip: "Be a steward. **Initial/Repeatable:** Unknown concept/Defined responsibilities. **Defined:** Public commitment. **Managed:** Publishing & sharing responsibilities. **Optimising:** System for assessing stewardship."
     },
     {
       id: 47,
@@ -738,18 +738,15 @@ export class AssessmentService {
         '4. Managed - The organisation adopts a systemic, iterative process to ensure data is used ethically, addressing public benefit and structural inequalities.',
         '5. Optimising - The organisation shows leadership in responsible data stewardship, with a proven public track record, and actively helps other organisations on their stewardship journey.'
       ],
-      tip: "Demonstrate commitment. **Initial:** No plan. **Repeatable:** Basic compliance. **Defined:** Public commitment. **Managed:** Systemic ethical process. **Optimising:** Leadership & track record."
+      tip: "Demonstrate commitment. **Initial/Repeatable:** No plan/Basic compliance. **Defined:** Public commitment. **Managed:** Systemic ethical process. **Optimising:** Leadership & track record."
     }
   ];
 
   constructor(
     private aiService: AiService
   ) {
-    // Add static tips
-    this.questions = this.questions.map(q => ({
-      ...q,
-      tip: this.getStaticTip(q.id)
-    }));
+    // Tips are now defined directly in the questions array
+    // this.questions = this.questions.map(q => ({ ...q, tip: this.getStaticTip(q.id) }));
 
     // Restore session if available
     this.checkPreviousSession();
@@ -785,18 +782,7 @@ export class AssessmentService {
     this.initialized.next(true);
   }
 
-  private getStaticTip(questionId: number): string | undefined {
-    // Simple static tips based on ID
-    const tips: { [key: number]: string } = {
-      1: 'A defined strategy helps align open data efforts with organizational goals.',
-      2: 'Sustainable funding is crucial for long-term open data success.',
-      3: 'Data quality ensures trust and usability for third-party developers.',
-      4: 'Privacy by design builds confidence among users and citizens.',
-      5: 'Modern platforms like CKAN or APIs facilitate easier data consumption.',
-      6: 'Engaging the community drives innovation and real-world usage of your data.'
-    };
-    return tips[questionId];
-  }
+
 
   private getInitialData(): AssessmentData {
     return {
@@ -1014,13 +1000,12 @@ export class AssessmentService {
     }
   }
 
-  private async calculateResults(data: AssessmentData): Promise<AssessmentResult> {
+  public calculateThemeScores(answers: Answer[]): { [theme: string]: number } {
     const themeScores: { [theme: string]: number } = {};
 
-    // Calculate average score for each theme
     this.themes.forEach(theme => {
       const themeQuestions = this.questions.filter(q => q.theme === theme.id);
-      const themeAnswers = data.answers.filter(a =>
+      const themeAnswers = answers.filter(a =>
         themeQuestions.some(q => q.id === a.questionId)
       );
 
@@ -1031,6 +1016,12 @@ export class AssessmentService {
         themeScores[theme.id] = 1;
       }
     });
+
+    return themeScores;
+  }
+
+  private async calculateResults(data: AssessmentData): Promise<AssessmentResult> {
+    const themeScores = this.calculateThemeScores(data.answers);
 
     // Calculate overall score
     const overallScore = Object.values(themeScores).reduce((sum, score) => sum + score, 0) / this.themes.length;
