@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatRadioModule } from '@angular/material/radio';
@@ -24,6 +25,7 @@ import { Question, Answer } from '../../models/assessment.model';
   ],
   template: `
     <div class="assessment-container" *ngIf="currentQuestion && !isSubmitting">
+
       <div class="container">
         <div class="assessment-content fade-in">
           <!-- Compact Progress Header -->
@@ -36,6 +38,9 @@ import { Question, Answer } from '../../models/assessment.model';
               <div class="theme-info">
                 <span class="theme-badge" [ngClass]="'theme-' + currentQuestion.theme">
                   {{ getThemeIcon(currentQuestion.theme) }} {{ getThemeTitle(currentQuestion.theme) }}
+                </span>
+                <span *ngIf="isSaving$ | async" class="saving-badge fade-in">
+                  <mat-icon>cloud_upload</mat-icon> Saving...
                 </span>
               </div>
             </div>
@@ -146,7 +151,7 @@ import { Question, Answer } from '../../models/assessment.model';
                     Choose the option that most accurately reflects your organization's <strong>current practices</strong>. 
                     If you're between two levels, select the lower one for a more conservative assessment.
                   </p>
-                  <p><strong>Tip:</strong> Focus on what your organization actually does consistently, not what it aspires to do.</p>
+                  <p><strong>Tip:</strong> {{ currentQuestion.tip || "Focus on what your organization actually does consistently, not what it aspires to do." }}</p>
                 </div>
               </div>
             </div>
@@ -225,6 +230,22 @@ import { Question, Answer } from '../../models/assessment.model';
       font-size: 0.8125rem;
       font-weight: 500;
       color: var(--nashtech-white);
+    }
+
+    .saving-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.8125rem;
+      color: var(--nashtech-text-secondary);
+      font-weight: 500;
+      margin-left: 8px;
+    }
+
+    .saving-badge mat-icon {
+      font-size: 16px;
+      height: 16px;
+      width: 16px;
     }
 
     .progress-visual {
@@ -621,6 +642,7 @@ export class AssessmentComponent implements OnInit {
   totalQuestions = 0;
   allQuestions: Question[] = [];
   answerForm: FormGroup;
+  isSaving$: Observable<boolean>;
 
   isSubmitting = false;
 
@@ -640,13 +662,14 @@ export class AssessmentComponent implements OnInit {
     this.answerForm = this.fb.group({
       selectedOption: ['', Validators.required]
     });
+    this.isSaving$ = this.assessmentService.isSaving$;
   }
 
   ngOnInit() {
     this.allQuestions = this.assessmentService.getQuestions();
     this.totalQuestions = this.assessmentService.getTotalQuestions();
 
-    // Determine which question to show based on current step
+    // Determine which question to show
     const currentStep = this.assessmentService.getCurrentStep();
     if (currentStep >= 2 && currentStep <= this.totalQuestions + 1) {
       this.currentQuestionIndex = currentStep - 1;
@@ -685,7 +708,7 @@ export class AssessmentComponent implements OnInit {
     }
   }
 
-  async goToNext() {
+  goToNext() {
     if (this.answerForm.valid) {
       // Save current answer
       this.saveCurrentAnswer();
@@ -693,16 +716,16 @@ export class AssessmentComponent implements OnInit {
       if (this.isLastQuestion) {
         // Complete assessment and go to results
         this.isSubmitting = true;
-        try {
-          await this.assessmentService.completeAssessment();
+        this.assessmentService.completeAssessment().then(() => {
           this.router.navigate(['/results']);
-        } catch (error) {
+        }).catch(error => {
           console.error('Error completing assessment:', error);
           this.isSubmitting = false;
-        }
+        });
       } else {
         // Go to next question
         this.currentQuestionIndex++;
+        // Save new step position
         this.assessmentService.setCurrentStep(this.currentQuestionIndex + 1);
         this.loadCurrentQuestion();
       }
