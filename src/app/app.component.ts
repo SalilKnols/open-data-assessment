@@ -262,5 +262,5 @@ import { ProgressBarComponent } from './components/progress-bar/progress-bar.com
   `]
 })
 export class AppComponent {
-  title = 'NashTech Open Data Maturity Assessment - Improved UI';
+  title = 'open-data-assessment-improved';
 }

@@ -540,16 +540,8 @@ export class UserDetailsComponent implements OnInit {
   ngOnInit() {
     // Reset current step to 0 when on user details page
     this.assessmentService.setCurrentStep(0);
-
-    // Clear stored user details on page load so the form is empty on refresh
-    this.assessmentService.clearUserDetails();
-
-    // Pre-fill form if user details already exist (after clear this will usually be empty)
-    this.assessmentService.assessmentData$.subscribe(data => {
-      if (data.userDetails) {
-        this.userForm.patchValue(data.userDetails);
-      }
-    });
+    // Ensure we start fresh
+    this.assessmentService.resetAssessment();
   }
 
   private createForm(): FormGroup {
@@ -564,19 +556,18 @@ export class UserDetailsComponent implements OnInit {
   onSubmit() {
     if (this.userForm.valid && !this.isSubmitting) {
       this.isSubmitting = true;
+      try {
+        const userDetails: UserDetails = this.userForm.value;
+        this.assessmentService.setUserDetails(userDetails);
 
-      const userDetails: UserDetails = this.userForm.value;
-
-      // Reset any previous assessment data so this is a fresh run for a new user
-      this.assessmentService.resetAssessment();
-
-      // Save user details to service
-      this.assessmentService.setUserDetails(userDetails);
-
-      // Navigate to welcome page
-      setTimeout(() => {
-        this.router.navigate(['/welcome']);
-      }, 800);
+        // Navigate to welcome page
+        setTimeout(() => {
+          this.router.navigate(['/welcome']);
+        }, 800);
+      } catch (error) {
+        console.error('Error starting assessment:', error);
+        this.isSubmitting = false;
+      }
     } else {
       // Mark all fields as touched to show validation errors
       Object.keys(this.userForm.controls).forEach(key => {

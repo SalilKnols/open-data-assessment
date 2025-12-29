@@ -18,6 +18,7 @@ export interface Question {
   question: string;
   type: 'rating' | 'percentage' | 'frequency' | 'boolean' | 'multiple';
   options: string[];
+  tip?: string; // Static helper tip for the question
 }
 
 export interface Answer {
