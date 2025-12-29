@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { firstValueFrom } from 'rxjs';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -537,7 +538,15 @@ export class UserDetailsComponent implements OnInit {
     this.userForm = this.createForm();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    // Wait for the service to finish restoring potential previous sessions
+    // This prevents a race condition where checkPreviousSession overwrites our reset
+    try {
+      await firstValueFrom(this.assessmentService.initialized$);
+    } catch (e) {
+      console.warn('Initialization check failed', e);
+    }
+
     // Reset current step to 0 when on user details page
     this.assessmentService.setCurrentStep(0);
     // Ensure we start fresh
@@ -553,12 +562,28 @@ export class UserDetailsComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.userForm.valid && !this.isSubmitting) {
       this.isSubmitting = true;
       try {
         const userDetails: UserDetails = this.userForm.value;
-        this.assessmentService.setUserDetails(userDetails);
+        const email = userDetails.emailAddress;
+
+        // Try to resume first
+        const resumed = await this.assessmentService.resumeExistingAssessment(email);
+
+        if (resumed) {
+          console.log('Resuming assessment for', email);
+          // Just update the user details in case they changed name/phone/org but kept email
+          // This keeps the ID and answers but updates the metadata
+          await this.assessmentService.setUserDetails(userDetails);
+        } else {
+          console.log('Starting new assessment for', email);
+          this.assessmentService.resetAssessment(); // Ensure fresh state
+          await this.assessmentService.setUserDetails(userDetails);
+        }
+
+        console.log('Assessment started/resumed successfully, navigating...');
 
         // Navigate to welcome page
         setTimeout(() => {
@@ -567,8 +592,12 @@ export class UserDetailsComponent implements OnInit {
       } catch (error) {
         console.error('Error starting assessment:', error);
         this.isSubmitting = false;
+        // Optionally show a user-visible error here
+        alert(`Failed to start assessment: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     } else {
+      console.log('Form is invalid or already submitting');
+      console.log('Form is invalid or already submitting');
       // Mark all fields as touched to show validation errors
       Object.keys(this.userForm.controls).forEach(key => {
         this.userForm.get(key)?.markAsTouched();

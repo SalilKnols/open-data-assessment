@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Subject, takeUntil } from 'rxjs';
+import { Router, NavigationEnd, Event } from '@angular/router';
+import { Subject, combineLatest, filter, startWith, takeUntil } from 'rxjs';
 import { AssessmentService } from '../../services/assessment.service';
 
 @Component({
@@ -8,7 +9,7 @@ import { AssessmentService } from '../../services/assessment.service';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="progress-container" *ngIf="shouldShowProgress">
+    <div class="progress-container fade-in" *ngIf="shouldShowProgress">
       <div class="progress-info">
         <span class="progress-text">{{ progressText }}</span>
         <span class="progress-percentage">{{ progressPercentage }}%</span>
@@ -26,6 +27,15 @@ import { AssessmentService } from '../../services/assessment.service';
     .progress-container {
       width: 100%;
       margin-top: var(--nashtech-spacing-sm);
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.3s ease-in;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .progress-info {
@@ -124,10 +134,22 @@ export class ProgressBarComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private assessmentService: AssessmentService) {}
+  constructor(
+    private assessmentService: AssessmentService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
-    this.assessmentService.assessmentData$
+    // Listen to both data changes and route changes
+    const routeEvents$ = this.router.events.pipe(
+      filter((e: Event): e is NavigationEnd => e instanceof NavigationEnd),
+      startWith(null)
+    );
+
+    combineLatest([
+      this.assessmentService.assessmentData$,
+      routeEvents$
+    ])
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.updateProgress();
@@ -141,7 +163,20 @@ export class ProgressBarComponent implements OnInit, OnDestroy {
 
   private updateProgress() {
     const currentStep = this.assessmentService.getCurrentStep();
-    this.shouldShowProgress = currentStep > 0 && this.assessmentService.hasUserDetails();
+    const currentUrl = this.router.url;
+
+    // Only show progress bar if:
+    // 1. We have started (step > 0)
+    // 2. We have user details
+    // 3. We are NOT on the landing/details page or welcome page
+    // Note: checks against '/' and '/user-details' to handle redirects safely
+    const isHiddenRoute =
+      currentUrl === '/' ||
+      currentUrl.startsWith('/user-details') ||
+      currentUrl.startsWith('/welcome') ||
+      currentUrl.startsWith('/results'); // Maybe hide on results too? Usually yes.
+
+    this.shouldShowProgress = !isHiddenRoute && currentStep > 0 && this.assessmentService.hasUserDetails();
 
     if (this.shouldShowProgress) {
       this.progressPercentage = this.assessmentService.getProgressPercentage();

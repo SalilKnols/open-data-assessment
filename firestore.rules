@@ -1,0 +1,10 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow public access to assessments since we don't use Firebase Auth
+    // In production, you might want to restrict this further (e.g. rate limiting or data validation)
+    match /assessments/{assessment} {
+      allow read, write: if true;
+    }
+  }
+}

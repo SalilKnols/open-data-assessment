@@ -66,30 +66,33 @@ declare var XLSX: any;
             </mat-card-header>
             <mat-card-content>
               <div class="themes-grid">
+                <div *ngIf="themePerformance.length === 0" class="no-data-message">
+                  No theme data available.
+                </div>
                 <div 
-                  *ngFor="let theme of getThemesWithScores(); trackBy: trackByThemeId"
+                  *ngFor="let item of themePerformance; trackBy: trackByThemeId"
                   class="theme-result-item">
                   <div class="theme-header">
-                    <div class="theme-icon-wrapper" [ngClass]="'theme-' + theme.id">
-                      <span class="theme-icon">{{ theme.icon }}</span>
+                    <div class="theme-icon-wrapper" [ngClass]="'theme-' + item.id">
+                      <span class="theme-icon">{{ item.icon }}</span>
                     </div>
                     <div class="theme-meta">
-                      <h4 class="theme-name">{{ theme.title }}</h4>
+                      <h4 class="theme-name">{{ item.title }}</h4>
                       <div class="theme-score-display">
-                        <span class="score-percentage">{{ getThemeScorePercentage(theme.id) }}%</span>
-                        <span class="score-value">({{ getThemeScore(theme.id) }}/5.0)</span>
+                        <span class="score-percentage">{{ item.percentage }}%</span>
+                        <span class="score-value">({{ item.formattedScore }}/5.0)</span>
                       </div>
                     </div>
                   </div>
                   <div class="theme-progress-container">
                     <mat-progress-bar 
                       mode="determinate" 
-                      [value]="getThemeScorePercentage(theme.id)"
+                      [value]="item.percentage"
                       class="theme-progress">
                     </mat-progress-bar>
                   </div>
                   <div class="theme-level-label">
-                    <span class="level-badge-small">{{ getThemeLevel(theme.id) }}</span>
+                    <span class="level-badge-small">{{ item.level }}</span>
                   </div>
                 </div>
               </div>
@@ -801,6 +804,7 @@ declare var XLSX: any;
 export class ResultsComponent implements OnInit, OnDestroy {
   results: AssessmentResult | null = null;
   assessmentData: AssessmentData | null = null;
+  themePerformance: any[] = [];
   countdown = 1000;
   private countdownInterval?: any;
 
@@ -818,6 +822,7 @@ export class ResultsComponent implements OnInit, OnDestroy {
 
       if (data.results) {
         this.results = data.results;
+        this.prepareThemePerformance();
         this.startCountdown();
       } else if (data.answers.length === 47) {
         // If we have answers but no results, it means completeAssessment wasn't called or finished.
@@ -882,12 +887,27 @@ export class ResultsComponent implements OnInit, OnDestroy {
     return explanations[this.results.maturityLevel] || '';
   }
 
-  getThemesWithScores() {
+  prepareThemePerformance() {
+    console.log('Preparing theme performance data...');
     const themes = this.assessmentService.getThemes();
-    return themes.map(theme => ({
-      ...theme,
-      score: this.results?.themeScores[theme.id] || 0
-    }));
+    console.log('Themes retrieved:', themes);
+
+    if (themes && themes.length > 0) {
+      this.themePerformance = themes.map(theme => {
+        const score = this.results?.themeScores ? this.results.themeScores[theme.id] : 0;
+        return {
+          ...theme,
+          score: score || 0,
+          percentage: Math.round(((score || 0) / 5) * 100),
+          level: this.getThemeLevel(theme.id),
+          formattedScore: (score || 0).toFixed(1)
+        };
+      });
+      console.log('Mapped theme performance:', this.themePerformance);
+    } else {
+      console.warn('No themes found in service!');
+      this.themePerformance = [];
+    }
   }
 
   getThemeScorePercentage(themeId: string): number {
@@ -949,12 +969,12 @@ export class ResultsComponent implements OnInit, OnDestroy {
         ['Theme', 'Score (%)', 'Level', 'Score (1-5)']
       ];
 
-      this.getThemesWithScores().forEach(theme => {
+      this.themePerformance.forEach(item => {
         summaryData.push([
-          theme.title,
-          `${this.getThemeScorePercentage(theme.id)}%`,
-          this.getThemeLevel(theme.id),
-          this.getThemeScore(theme.id)
+          item.title,
+          `${item.percentage}%`,
+          item.level,
+          item.formattedScore
         ]);
       });
 
@@ -1007,8 +1027,8 @@ export class ResultsComponent implements OnInit, OnDestroy {
 
       // Theme Scores
       let yPos = 90;
-      this.getThemesWithScores().forEach(theme => {
-        doc.text(`${theme.title}: ${this.getThemeScore(theme.id)} (${this.getThemeScorePercentage(theme.id)}%)`, 14, yPos);
+      this.themePerformance.forEach(item => {
+        doc.text(`${item.title}: ${item.formattedScore} (${item.percentage}%)`, 14, yPos);
         yPos += 5;
       });
 

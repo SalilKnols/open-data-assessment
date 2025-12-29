@@ -12,11 +12,17 @@ export class AssessmentService {
   private assessmentDataSubject = new BehaviorSubject<AssessmentData>(this.getInitialData());
   public assessmentData$ = this.assessmentDataSubject.asObservable();
 
-  private initialized = new BehaviorSubject<boolean>(true);
+  // Start as false to block routing until we've checked for a session
+  private initialized = new BehaviorSubject<boolean>(false);
   public initialized$ = this.initialized.asObservable();
+
+  // Saving state
+  private _isSaving = new BehaviorSubject<boolean>(false);
+  public isSaving$ = this._isSaving.asObservable();
 
   private firestore: Firestore = inject(Firestore);
   private currentDocId: string | null = null;
+  private readonly STORAGE_KEY = 'currentAssessmentId';
 
   private themes: AssessmentTheme[] = [
     { id: 'data-publication', title: 'Data Publication Process', icon: '📊', description: 'Standards, governance, and risk management for data publication' },
@@ -744,6 +750,39 @@ export class AssessmentService {
       ...q,
       tip: this.getStaticTip(q.id)
     }));
+
+    // Restore session if available
+    this.checkPreviousSession();
+  }
+
+  private async checkPreviousSession() {
+    const savedId = localStorage.getItem(this.STORAGE_KEY);
+    if (savedId) {
+      console.log('Found previous session ID:', savedId);
+      try {
+        const docRef = doc(this.firestore, 'assessments', savedId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const data = docSnap.data() as AssessmentData;
+          if (!data.completed) {
+            this.currentDocId = savedId;
+            this.assessmentDataSubject.next(data);
+            console.log('Restored previous session');
+          } else {
+            // Cleanup completed session
+            localStorage.removeItem(this.STORAGE_KEY);
+          }
+        } else {
+          localStorage.removeItem(this.STORAGE_KEY);
+        }
+      } catch (error) {
+        console.error('Error restoring session:', error);
+        localStorage.removeItem(this.STORAGE_KEY);
+      }
+    }
+    // Signal that initialization is complete
+    this.initialized.next(true);
   }
 
   private getStaticTip(questionId: number): string | undefined {
@@ -768,8 +807,42 @@ export class AssessmentService {
     };
   }
 
+  /**
+   * Attempt to find an incomplete assessment for this email.
+   * If found, load it and return true.
+   */
+  async resumeExistingAssessment(email: string): Promise<boolean> {
+    try {
+      const assessmentsRef = collection(this.firestore, 'assessments');
+      const q = query(
+        assessmentsRef,
+        where('userDetails.emailAddress', '==', email.trim().toLowerCase()),
+        where('completed', '==', false)
+      );
 
-  setUserDetails(userDetails: UserDetails): void {
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        // Take the most recent one if multiple exist (though ideally should be one)
+        const docSnap = querySnapshot.docs[0];
+        const data = docSnap.data() as AssessmentData;
+
+        this.currentDocId = docSnap.id;
+        this.assessmentDataSubject.next(data);
+
+        // Also save to local storage for persistence
+        localStorage.setItem(this.STORAGE_KEY, this.currentDocId);
+
+        console.log('Resumed existing assessment:', this.currentDocId);
+        return true;
+      }
+    } catch (error) {
+      console.error('Error resuming assessment:', error);
+    }
+    return false;
+  }
+
+  async setUserDetails(userDetails: UserDetails): Promise<void> {
     const currentData = this.assessmentDataSubject.value;
 
     // Normalize email
@@ -784,7 +857,7 @@ export class AssessmentService {
       startTime: currentData.startTime || new Date()
     };
     this.assessmentDataSubject.next(updatedData);
-    this.saveProgress(); // Async firestore
+    await this.saveProgress(); // Async firestore, now awaited
   }
 
   hasUserDetails(): boolean {
@@ -897,6 +970,9 @@ export class AssessmentService {
     // Save to Firestore (final update)
     await this.saveProgress();
 
+    // Clear local storage as we are done
+    localStorage.removeItem(this.STORAGE_KEY);
+
     return results;
   }
 
@@ -904,6 +980,8 @@ export class AssessmentService {
     const currentData = this.assessmentDataSubject.value;
     // Don't save if we don't have user details yet
     if (!currentData.userDetails) return;
+
+    this._isSaving.next(true);
 
     try {
       if (this.currentDocId) {
@@ -922,8 +1000,17 @@ export class AssessmentService {
         console.log('Created new assessment with ID:', this.currentDocId);
       }
 
+      // Persist ID to local storage for refresh survival
+      if (this.currentDocId) {
+        localStorage.setItem(this.STORAGE_KEY, this.currentDocId);
+        console.log('Saved to LocalStorage:', this.STORAGE_KEY, this.currentDocId);
+      }
+
     } catch (error) {
       console.error('Failed to save assessment progress:', error);
+      throw error; // Re-throw to alert caller
+    } finally {
+      this._isSaving.next(false);
     }
   }
 
@@ -973,6 +1060,7 @@ export class AssessmentService {
   resetAssessment(): void {
     this.assessmentDataSubject.next(this.getInitialData());
     this.currentDocId = null;
+    localStorage.removeItem(this.STORAGE_KEY);
   }
 
   /**

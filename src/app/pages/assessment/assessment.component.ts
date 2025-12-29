@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -37,6 +38,9 @@ import { Question, Answer } from '../../models/assessment.model';
               <div class="theme-info">
                 <span class="theme-badge" [ngClass]="'theme-' + currentQuestion.theme">
                   {{ getThemeIcon(currentQuestion.theme) }} {{ getThemeTitle(currentQuestion.theme) }}
+                </span>
+                <span *ngIf="isSaving$ | async" class="saving-badge fade-in">
+                  <mat-icon>cloud_upload</mat-icon> Saving...
                 </span>
               </div>
             </div>
@@ -226,6 +230,22 @@ import { Question, Answer } from '../../models/assessment.model';
       font-size: 0.8125rem;
       font-weight: 500;
       color: var(--nashtech-white);
+    }
+
+    .saving-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.8125rem;
+      color: var(--nashtech-text-secondary);
+      font-weight: 500;
+      margin-left: 8px;
+    }
+
+    .saving-badge mat-icon {
+      font-size: 16px;
+      height: 16px;
+      width: 16px;
     }
 
     .progress-visual {
@@ -622,6 +642,7 @@ export class AssessmentComponent implements OnInit {
   totalQuestions = 0;
   allQuestions: Question[] = [];
   answerForm: FormGroup;
+  isSaving$: Observable<boolean>;
 
   isSubmitting = false;
 
@@ -641,6 +662,7 @@ export class AssessmentComponent implements OnInit {
     this.answerForm = this.fb.group({
       selectedOption: ['', Validators.required]
     });
+    this.isSaving$ = this.assessmentService.isSaving$;
   }
 
   ngOnInit() {
