@@ -893,8 +893,21 @@ export class ResultsComponent implements OnInit, OnDestroy {
     console.log('Themes retrieved:', themes);
 
     if (themes && themes.length > 0) {
+      let themeScores = this.results?.themeScores;
+
+      // Fallback: Recalculate if missing or empty
+      if ((!themeScores || Object.keys(themeScores).length === 0) && this.assessmentData?.answers) {
+        console.warn('Theme scores missing in results, recalculating from answers...');
+        try {
+          themeScores = this.assessmentService.calculateThemeScores(this.assessmentData.answers);
+          console.log('Recalculated theme scores:', themeScores);
+        } catch (e) {
+          console.error('Failed to recalculate theme scores:', e);
+        }
+      }
+
       this.themePerformance = themes.map(theme => {
-        const score = this.results?.themeScores ? this.results.themeScores[theme.id] : 0;
+        const score = themeScores ? themeScores[theme.id] : 0;
         return {
           ...theme,
           score: score || 0,

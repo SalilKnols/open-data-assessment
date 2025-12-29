@@ -151,7 +151,7 @@ import { Question, Answer } from '../../models/assessment.model';
                     Choose the option that most accurately reflects your organization's <strong>current practices</strong>. 
                     If you're between two levels, select the lower one for a more conservative assessment.
                   </p>
-                  <p><strong>Tip:</strong> {{ currentQuestion.tip || "Focus on what your organization actually does consistently, not what it aspires to do." }}</p>
+                  <p class="tip-section"><strong>Tip:</strong> <span [innerHTML]="formatTip(currentQuestion.tip)"></span></p>
                 </div>
               </div>
             </div>
@@ -527,6 +527,14 @@ import { Question, Answer } from '../../models/assessment.model';
       margin-bottom: 0;
     }
 
+    .tip-section {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--nashtech-text-secondary);
+      margin-top: var(--nashtech-spacing-md);
+      margin-bottom: 0;
+    }
+
     /* Loading State */
     .loading-container {
       min-height: 40vh;
@@ -763,5 +771,39 @@ export class AssessmentComponent implements OnInit {
 
   trackByOption(index: number, option: string): string {
     return option;
+  }
+
+  formatTip(tip: string | undefined): string {
+    if (!tip) return "Focus on what your organization actually does consistently, not what it aspires to do.";
+
+    // Convert Markdown bold to HTML strong
+    let formatted = tip.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+    // Convert Markdown italic to HTML em
+    formatted = formatted.replace(/\*(.*?)\*/g, '<em>$1</em>');
+
+    // Split by the level separator pattern
+    // The regex captures the punctuation/space to preserve it if needed, or we just reconstruct
+    // We want to handle the FIRST occurrence differently (double break) than the rest (single break)
+
+    let parts = formatted.split(/(\.|\?)\s+(?=<strong>[A-Z])/);
+
+    if (parts.length > 1) {
+      // parts[0] is the intro text
+      // parts[1] is the punctuation (. or ?)
+      // parts[2] is the rest starting after the whitespace
+      // Wait, split keeps capturing groups. 
+
+      // Let's use a simpler replacement loop or callback to count replacements
+      let replaceCount = 0;
+      formatted = formatted.replace(/(\.|\?)\s+(<strong>[A-Z])/g, (match, p1, p2) => {
+        replaceCount++;
+        // First match gets double break (gap), subsequent matches get single break
+        const separator = replaceCount === 1 ? '<br><br>' : '<br>';
+        return `${p1}${separator}${p2}`;
+      });
+    }
+
+    return formatted;
   }
 }
