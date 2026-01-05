@@ -32,6 +32,7 @@ export interface AssessmentResult {
   themeScores: { [theme: string]: number };
   maturityLevel: 'Beginner' | 'Developing' | 'Advanced' | 'Leading' | 'Optimizing';
   recommendations: string[];
+  themeRecommendations?: { [themeId: string]: string[] };
 }
 
 export interface AssessmentData {

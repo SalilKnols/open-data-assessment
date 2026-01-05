@@ -1038,12 +1038,67 @@ export class ResultsComponent implements OnInit, OnDestroy {
       doc.text(`Overall Score: ${this.getOverAllScore()} / 5.0`, 14, 75);
       doc.text(`Maturity Level: ${this.results.maturityLevel}`, 14, 80);
 
+      const pageHeight = doc.internal.pageSize.height;
+
       // Theme Scores
       let yPos = 90;
       this.themePerformance.forEach(item => {
-        doc.text(`${item.title}: ${item.formattedScore} (${item.percentage}%)`, 14, yPos);
-        yPos += 5;
+        // Check for page overflow before starting a new theme block
+        if (yPos > pageHeight - 40) {
+          doc.addPage();
+          yPos = 20;
+        }
+
+        if (this.results!.themeRecommendations && this.results!.themeRecommendations[item.id]) {
+          doc.text(`${item.title}: ${item.formattedScore} (${item.percentage}%)`, 14, yPos);
+          yPos += 5;
+
+          doc.setFontSize(9);
+          doc.setFont('helvetica', 'italic');
+
+          // Render recommendations as bullet points
+          const recommendations = this.results!.themeRecommendations[item.id];
+          if (Array.isArray(recommendations)) {
+            recommendations.forEach(rec => {
+              const bulletRec = `• ${rec}`;
+              // Split text
+              const splitRec = doc.splitTextToSize(bulletRec, pageWidth - 34);
+              const textHeight = splitRec.length * 4;
+
+              // Check if THIS bullet point fits
+              if (yPos + textHeight > pageHeight - 20) {
+                doc.addPage();
+                yPos = 20;
+              }
+
+              doc.text(splitRec, 20, yPos);
+              yPos += textHeight + 2;
+            });
+            yPos += 3; // Extra space after all bullets
+          } else if (typeof recommendations === 'string') {
+            // Fallback for legacy string format
+            const recommendation = `Recommendation: ${recommendations}`;
+            const splitRecommendation = doc.splitTextToSize(recommendation, pageWidth - 28);
+
+            // Check if legacy text fits
+            if (yPos + (splitRecommendation.length * 4) > pageHeight - 20) {
+              doc.addPage();
+              yPos = 20;
+            }
+
+            doc.text(splitRecommendation, 14, yPos);
+            yPos += (splitRecommendation.length * 4) + 5;
+          }
+
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(10);
+        } else {
+          doc.text(`${item.title}: ${item.formattedScore} (${item.percentage}%)`, 14, yPos);
+          yPos += 5;
+        }
       });
+
+
 
       // Questions & Answers Table
       const tableData = this.assessmentData.answers.map(answer => {
@@ -1055,6 +1110,13 @@ export class ResultsComponent implements OnInit, OnDestroy {
           answer.score.toString()
         ];
       });
+
+      // Check if there is enough space for the table header + at least one row
+      // Assuming header ~10-15px and a row ~10px + margins
+      if (yPos + 50 > pageHeight) {
+        doc.addPage();
+        yPos = 20; // Reset to top
+      }
 
       autoTable(doc, {
         startY: yPos + 10,
