@@ -164,7 +164,7 @@ import { Question, Answer } from '../../models/assessment.model';
     <div class="loading-container" *ngIf="!currentQuestion || isSubmitting">
       <div class="container">
         <div class="loading-content">
-          <mat-icon class="loading-icon pulse">hourglass_empty</mat-icon>
+          <mat-icon class="loading-icon pulse">psychology</mat-icon>
           <h3 *ngIf="!isSubmitting">Loading Assessment Questions...</h3>
           <h3 *ngIf="isSubmitting">Generating Personalized Recommendations...</h3>
           <p *ngIf="!isSubmitting">Preparing your personalized ODI framework evaluation</p>
@@ -549,9 +549,35 @@ import { Question, Answer } from '../../models/assessment.model';
     }
 
     .loading-icon {
-      font-size: 3rem;
+      font-size: 4rem;
+      width: 4rem;
+      height: 4rem;
+      line-height: 4rem;
+      overflow: visible;
       color: var(--nashtech-primary);
       margin-bottom: var(--nashtech-spacing-md);
+    }
+    
+    .loading-icon.pulse {
+      animation: thinking 2s infinite ease-in-out;
+    }
+
+    @keyframes thinking {
+      0% {
+        transform: scale(0.95);
+        opacity: 0.7;
+        text-shadow: 0 0 0 rgba(230, 81, 0, 0);
+      }
+      50% {
+        transform: scale(1.1);
+        opacity: 1;
+        text-shadow: 0 0 20px rgba(230, 81, 0, 0.4);
+      }
+      100% {
+        transform: scale(0.95);
+        opacity: 0.7;
+        text-shadow: 0 0 0 rgba(230, 81, 0, 0);
+      }
     }
 
     .loading-content h3 {

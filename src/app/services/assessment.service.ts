@@ -1030,13 +1030,14 @@ export class AssessmentService {
     const maturityLevel = this.getMaturityLevel(overallScore);
 
     // Generate recommendations using AI
-    const recommendations = await this.aiService.generateRecommendations(data, maturityLevel, themeScores);
+    const aiResponse = await this.aiService.generateRecommendations(data, maturityLevel, themeScores);
 
     return {
       overallScore,
       themeScores,
       maturityLevel,
-      recommendations
+      recommendations: aiResponse.general,
+      themeRecommendations: aiResponse.themes
     };
   }
 

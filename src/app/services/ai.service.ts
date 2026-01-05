@@ -25,7 +25,7 @@ export class AiService {
         data: AssessmentData,
         maturityLevel: string,
         themeScores: { [theme: string]: number }
-    ): Promise<string[]> {
+    ): Promise<{ general: string[], themes: { [id: string]: string[] } }> {
         const prompt = this.constructPrompt(data, maturityLevel, themeScores);
 
         for (const modelName of this.FALLBACK_MODELS) {
@@ -49,11 +49,14 @@ export class AiService {
         // Debug: Check what models are actually available
         await this.debugModelAccess();
 
-        return [
-            'Unable to generate personalized recommendations at this time.',
-            'Please review your lowest scoring areas and focus on foundational improvements.',
-            'Consult with a NashTech expert for a detailed analysis.'
-        ];
+        return {
+            general: [
+                'Unable to generate personalized recommendations at this time.',
+                'Please review your lowest scoring areas and focus on foundational improvements.',
+                'Consult with a NashTech expert for a detailed analysis.'
+            ],
+            themes: {}
+        };
     }
 
     private async debugModelAccess() {
@@ -81,49 +84,72 @@ export class AiService {
     ): string {
         let prompt = `
       You are an expert consultant in Open Data Maturity. 
-      Based on the following assessment results, provide 3-5 specific, actionable recommendations 
+      Based on the following assessment results, provide specific, actionable recommendations 
       to help the organization improve their Open Data maturity.
-      
+
       Organization Maturity Level: ${maturityLevel}
-      
+
       Theme Scores (1-5 scale):
       ${Object.entries(themeScores).map(([theme, score]) => `- ${theme}: ${score.toFixed(1)}`).join('\n')}
-      
-      Key Answers provided:
+
+      All Answers provided (Grouped by Theme context):
     `;
 
-        // Add some context from answers (simplified for brevity, could be more detailed)
-        // We'll take the lowest scoring answers to focus improvements
+        // Add all answers
         const answers = data.answers;
-        // Sort answers by score ascending to find weak points
-        const weakPoints = [...answers].sort((a, b) => a.score - b.score).slice(0, 5);
-
-        weakPoints.forEach(a => {
+        answers.forEach(a => {
             prompt += `\n- Question ID ${a.questionId} (Score: ${a.score}): ${a.selectedOption}`;
         });
 
         prompt += `
       
-      Please format the output as a simple JSON array of strings, e.g.:
-      [
-        "Recommendation 1...",
-        "Recommendation 2...",
-        "Recommendation 3..."
-      ]
-      Do not include markdown formatting like \`\`\`json or \`\`\`. Just the raw JSON array.
+      Please provide your response in the following strict JSON format:
+      {
+        "general": [
+            "Recommendation 1 (General high-level advice)",
+            "Recommendation 2 ...",
+            "Recommendation 3 ..."
+        ],
+        "themes": {
+            "data-publication": [
+                "Bullet point 1 (Simple, actionable advice)",
+                "Bullet point 2 (Avoid jargon)",
+                "Bullet point 3"
+            ],
+            "data-literacy": ["..."],
+            "customer-support": ["..."],
+            "investment": ["..."],
+            "strategic-oversight": ["..."]
+        }
+      }
+
+      Requirements:
+      1. 'general': 3-5 short, punchy recommendations.
+      2. 'themes': For EACH of the 5 themes, provide 3-4 CONCISE bullet points.
+      3. Language: Use SIMPLE, EASY TO UNDERSTAND language. Avoid complex technical jargon. Explain things clearly as if speaking to a non-technical manager.
+      4. Do not include markdown formatting like \`\`\`json or \`\`\`. Just the raw JSON object.
     `;
 
         return prompt;
     }
 
-    private parseRecommendations(text: string): string[] {
+    private parseRecommendations(text: string): { general: string[], themes: { [id: string]: string[] } } {
         try {
             // Clean up any potential markdown code blocks if the model ignores the instruction
             const cleanText = text.replace(/```json/g, '').replace(/```/g, '').trim();
-            return JSON.parse(cleanText);
+            const parsed = JSON.parse(cleanText);
+
+            return {
+                general: Array.isArray(parsed.general) ? parsed.general : [],
+                themes: typeof parsed.themes === 'object' ? parsed.themes : {}
+            };
         } catch (e) {
-            console.warn('Failed to parse AI response as JSON, returning raw text split by newlines', e);
-            return text.split('\n').filter(line => line.trim().length > 0);
+            console.warn('Failed to parse AI response as JSON', e);
+            // Fallback: try to just return lines as general recommendations
+            return {
+                general: text.split('\n').filter(line => line.trim().length > 0).slice(0, 5),
+                themes: {}
+            };
         }
     }
 }
