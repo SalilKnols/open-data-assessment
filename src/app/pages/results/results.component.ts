@@ -818,7 +818,16 @@ export class ResultsComponent implements OnInit, OnDestroy {
     this.loadXLSXLibrary();
 
     this.assessmentService.assessmentData$.subscribe(data => {
-      this.assessmentData = data;
+      // Convert Firestore Timestamps to Date objects if needed
+      const processedData = { ...data };
+      if (processedData.startTime && typeof (processedData.startTime as any).toDate === 'function') {
+        processedData.startTime = (processedData.startTime as any).toDate();
+      }
+      if (processedData.endTime && typeof (processedData.endTime as any).toDate === 'function') {
+        processedData.endTime = (processedData.endTime as any).toDate();
+      }
+
+      this.assessmentData = processedData;
 
       if (data.results) {
         this.results = data.results;

@@ -79,14 +79,12 @@ export class AssessmentService {
 
         if (docSnap.exists()) {
           const data = docSnap.data() as AssessmentData;
-          if (!data.completed) {
-            this.currentDocId = savedId;
-            this.assessmentDataSubject.next(data);
-            console.log('Restored previous session');
-          } else {
-            // Cleanup completed session
-            localStorage.removeItem(this.STORAGE_KEY);
-          }
+
+          // Always restore the session, even if completed.
+          // This allows us to persist the Results page on refresh.
+          this.currentDocId = savedId;
+          this.assessmentDataSubject.next(data);
+          console.log('Restored previous session (Completed: ' + data.completed + ')');
         } else {
           localStorage.removeItem(this.STORAGE_KEY);
         }
@@ -207,6 +205,10 @@ export class AssessmentService {
     return this.questions.length;
   }
 
+  getCurrentData(): AssessmentData {
+    return this.assessmentDataSubject.value;
+  }
+
   saveAnswer(questionId: number, selectedOption: string): void {
     const currentData = this.assessmentDataSubject.value;
     const currentAnswers = currentData.answers || [];
@@ -290,8 +292,10 @@ export class AssessmentService {
     // Save to Firestore (final update)
     await this.saveProgress();
 
-    // Clear local storage as we are done
-    localStorage.removeItem(this.STORAGE_KEY);
+    // We DO NOT clear local storage here anymore.
+    // We want to persist the session ID so if the user refreshes the results page,
+    // we can reload their results.
+    // localStorage.removeItem(this.STORAGE_KEY);
 
     return results;
   }
