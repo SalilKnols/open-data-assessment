@@ -8,5 +8,6 @@ export const environment = {
     messagingSenderId: "FIREBASE_MESSAGING_SENDER_ID_PLACEHOLDER",
     appId: "FIREBASE_APP_ID_PLACEHOLDER",
     measurementId: "FIREBASE_MEASUREMENT_ID_PLACEHOLDER"
-  }
+  },
+  geminiApiKey: "GEMINI_API_KEY_PLACEHOLDER"
 };
