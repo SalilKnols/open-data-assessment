@@ -723,6 +723,14 @@ export class AssessmentComponent implements OnInit {
     // Subscribe to questions loading
     this.assessmentService.questions$.subscribe(questions => {
       if (questions.length > 0) {
+
+        // Check if assessment is already completed
+        // If so, redirect to results immediately
+        if (this.assessmentService.getCurrentData().completed) {
+          this.router.navigate(['/results']);
+          return;
+        }
+
         this.allQuestions = questions;
         this.totalQuestions = questions.length;
         this.isLoading = false;
