@@ -457,7 +457,7 @@ export class WelcomeComponent implements OnInit {
   constructor(
     private router: Router,
     private assessmentService: AssessmentService
-  ) {}
+  ) { }
 
   ngOnInit() {
     if (this.assessmentService.getCurrentStep() === 0) {
