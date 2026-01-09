@@ -11,6 +11,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 18
+      - run: |
+          mkdir -p src/app/environments
+          echo "${{ secrets.FIREBASE_ENV_PROD }}" > src/app/environments/environment.prod.ts
+          echo "${{ secrets.FIREBASE_ENV_PROD }}" > src/app/environments/environment.ts
       - run: npm ci
       - run: npm run build:prod
       - uses: FirebaseExtended/action-hosting-deploy@v0
