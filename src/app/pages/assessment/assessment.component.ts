@@ -229,6 +229,12 @@ import { Question, Answer } from '../../models/assessment.model';
       color: var(--nashtech-text-secondary);
     }
 
+    .theme-info {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
     .theme-badge {
       display: inline-flex;
       align-items: center;
@@ -238,16 +244,21 @@ import { Question, Answer } from '../../models/assessment.model';
       font-size: 0.8125rem;
       font-weight: 500;
       color: var(--nashtech-white);
+      z-index: 2; /* Ensure badge stays on top */
     }
 
     .saving-badge {
+      position: absolute;
+      right: 100%; /* Position to the left of the theme badge */
+      margin-right: var(--nashtech-spacing-sm);
       display: inline-flex;
       align-items: center;
       gap: 4px;
       font-size: 0.8125rem;
       color: var(--nashtech-text-secondary);
       font-weight: 500;
-      margin-left: 8px;
+      white-space: nowrap;
+      pointer-events: none;
     }
 
     .saving-badge mat-icon {
@@ -789,7 +800,11 @@ export class AssessmentComponent implements OnInit {
   }
 
   getQuestionProgress(): number {
-    return Math.round((this.currentQuestionIndex / this.totalQuestions) * 100);
+    if (this.totalQuestions === 0) return 0;
+    // Calculate progress based on COMPLETED questions (previous ones), not current one.
+    // Question 1: (1-1)/47 = 0%
+    // Question 47: (47-1)/47 = ~98%
+    return Math.round(((this.currentQuestionIndex - 1) / this.totalQuestions) * 100);
   }
 
   getThemeTitle(themeId: string): string {
