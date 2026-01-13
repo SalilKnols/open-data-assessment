@@ -1,7 +1,7 @@
 {
-  "name": "open-data-assessment-improved",
-  "version": "1.0.0",
-  "description": "NashTech Open Data Maturity Assessment - Improved UI/UX",
+  "name": "nashtech-surveyhub-frontend",
+  "version": "2.0.0",
+  "description": "NashTech SurveyHub - Dynamic Survey Platform Frontend",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
