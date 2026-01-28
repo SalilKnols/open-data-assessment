@@ -60,6 +60,42 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
                 </div>
             </div>
 
+            <!-- Dropdown Tool -->
+            <div class="tool-item group/item" cdkDrag [cdkDragData]="'dropdown'" title="Dropdown">
+                <div class="icon-container">
+                    <span class="material-icons text-gray-500 group-hover/item:text-teal-500 transition">arrow_drop_down_circle</span>
+                </div>
+                <span class="text-label">Dropdown</span>
+
+                <div *cdkDragPreview class="tool-preview">
+                    <span class="material-icons mr-2">arrow_drop_down_circle</span> Dropdown
+                </div>
+            </div>
+
+            <!-- Date Tool -->
+            <div class="tool-item group/item" cdkDrag [cdkDragData]="'date'" title="Date">
+                <div class="icon-container">
+                    <span class="material-icons text-gray-500 group-hover/item:text-orange-500 transition">calendar_today</span>
+                </div>
+                <span class="text-label">Datepicker</span>
+
+                <div *cdkDragPreview class="tool-preview">
+                    <span class="material-icons mr-2">calendar_today</span> Date
+                </div>
+            </div>
+
+            <!-- File Upload Tool -->
+            <div class="tool-item group/item" cdkDrag [cdkDragData]="'file'" title="File Upload">
+                <div class="icon-container">
+                    <span class="material-icons text-gray-500 group-hover/item:text-indigo-500 transition">cloud_upload</span>
+                </div>
+                <span class="text-label">File Upload</span>
+
+                <div *cdkDragPreview class="tool-preview">
+                    <span class="material-icons mr-2">cloud_upload</span> File Upload
+                </div>
+            </div>
+
         </div>
 
         <!-- Bottom Actions (Restored Position) -->

@@ -77,7 +77,10 @@ export class PropertiesPanelComponent {
         { value: 'text', label: 'Text Input' },
         { value: 'rating', label: 'Rating' },
         { value: 'radiogroup', label: 'Multiple Choice' },
-        { value: 'checkbox', label: 'Checkbox' }
+        { value: 'checkbox', label: 'Checkbox' },
+        { value: 'dropdown', label: 'Dropdown' },
+        { value: 'date', label: 'Datepicker' },
+        { value: 'file', label: 'File Upload' }
     ];
 
     onTypeChange(newType: string) {
@@ -87,7 +90,7 @@ export class PropertiesPanelComponent {
         this.element.type = newType as any;
 
         // Initialize choices if switching to choice-based types
-        if ((newType === 'radiogroup' || newType === 'checkbox') && (!this.element.choices || this.element.choices.length === 0)) {
+        if ((newType === 'radiogroup' || newType === 'checkbox' || newType === 'dropdown') && (!this.element.choices || this.element.choices.length === 0)) {
             this.element.choices = ['Option 1', 'Option 2', 'Option 3'];
         }
     }
@@ -98,6 +101,9 @@ export class PropertiesPanelComponent {
             case 'rating': return 'star_rate';
             case 'radiogroup': return 'radio_button_checked';
             case 'checkbox': return 'check_box';
+            case 'dropdown': return 'arrow_drop_down_circle';
+            case 'date': return 'calendar_today';
+            case 'file': return 'cloud_upload';
             default: return 'help_outline';
         }
     }

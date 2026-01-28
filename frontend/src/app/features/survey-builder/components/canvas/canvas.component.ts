@@ -114,6 +114,42 @@ import { SurveyElement, QuestionType } from '../../../../core/models/survey-elem
                             </button>
                          </div>
 
+                         <!-- Dropdown Question -->
+                         <div *ngSwitchCase="'dropdown'" class="space-y-3">
+                            <div *ngFor="let choice of element.choices; let choiceIndex = index; trackBy: trackByIndex"
+                                 class="flex items-center gap-3 p-3 border border-gray-200 rounded-xl hover:bg-gray-50 group/choice relative transition-colors">
+                                <span class="material-icons text-gray-300">arrow_drop_down_circle</span>
+                                <input [(ngModel)]="element.choices![choiceIndex]"
+                                       class="bg-transparent border-none focus:ring-0 w-full text-gray-700 font-medium placeholder-gray-400"
+                                       placeholder="Option Label">
+
+                                <!-- Remove Option Button -->
+                                <button (click)="removeChoice(element, choiceIndex); $event.stopPropagation()"
+                                        class="opacity-0 group-hover/choice:opacity-100 text-gray-400 hover:text-red-500 transition p-1">
+                                    <span class="material-icons text-lg">close</span>
+                                </button>
+                            </div>
+
+                            <!-- Add Option Button -->
+                            <button (click)="addChoice(element); $event.stopPropagation()" 
+                                    class="text-blue-600 font-semibold text-sm flex items-center gap-1 hover:bg-blue-50 px-3 py-2 rounded-lg transition mt-2">
+                                <span class="material-icons text-sm">add</span> Add Option
+                            </button>
+                         </div>
+
+                         <!-- Date Question -->
+                         <div *ngSwitchCase="'date'">
+                            <input disabled type="date" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-400 cursor-not-allowed">
+                         </div>
+
+                         <!-- File Upload Question -->
+                         <div *ngSwitchCase="'file'">
+                            <div class="w-full p-8 border-2 border-dashed border-gray-200 rounded-xl bg-gray-50 flex flex-col items-center justify-center text-gray-400 gap-2 cursor-not-allowed">
+                                <span class="material-icons text-3xl">cloud_upload</span>
+                                <span class="text-sm font-medium">File upload area (Preview)</span>
+                            </div>
+                         </div>
+
                          <div *ngSwitchDefault>
                             <p class="text-gray-400 text-sm uppercase">Unknown Type: {{ element.type }}</p>
                          </div>
@@ -165,7 +201,7 @@ export class CanvasComponent {
       title: this.getDefaultTitle(type),
       name: `question${this.elements.length + 1}`,
       isRequired: false,
-      choices: (type === 'radiogroup' || type === 'checkbox') ? ['Option 1', 'Option 2'] : undefined
+      choices: (type === 'radiogroup' || type === 'checkbox' || type === 'dropdown') ? ['Option 1', 'Option 2'] : undefined
     };
 
     if (index !== undefined) {
@@ -211,6 +247,9 @@ export class CanvasComponent {
       case 'rating': return 'How would you rate this?';
       case 'radiogroup': return 'Select one option';
       case 'checkbox': return 'Select all that apply';
+      case 'dropdown': return 'Select from the list';
+      case 'date': return 'When did this happen?';
+      case 'file': return 'Upload your file';
       default: return 'New Question';
     }
   }
@@ -221,6 +260,9 @@ export class CanvasComponent {
       case 'rating': return 'star_rate';
       case 'radiogroup': return 'radio_button_checked';
       case 'checkbox': return 'check_box';
+      case 'dropdown': return 'arrow_drop_down_circle';
+      case 'date': return 'calendar_today';
+      case 'file': return 'cloud_upload';
       default: return 'help_outline';
     }
   }

@@ -1,4 +1,4 @@
-export type QuestionType = 'text' | 'rating' | 'radiogroup' | 'checkbox' | 'comment' | 'boolean';
+export type QuestionType = 'text' | 'rating' | 'radiogroup' | 'checkbox' | 'comment' | 'boolean' | 'dropdown' | 'date' | 'file';
 
 export interface SurveyElement {
     id: string; // Unique ID on the canvas
