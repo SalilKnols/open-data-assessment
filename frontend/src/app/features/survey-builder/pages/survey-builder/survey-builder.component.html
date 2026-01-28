@@ -6,7 +6,10 @@
             <span class="text-sm text-gray-400">/ My First Survey</span>
         </div>
         <div class="flex items-center gap-3">
-            <button class="px-4 py-2 text-sm text-gray-600 hover:text-nashtech-primary transition">Preview</button>
+            <button (click)="openPreview()"
+                class="px-4 py-2 text-sm text-gray-600 hover:text-nashtech-primary transition flex items-center gap-2">
+                <span class="material-icons text-lg">visibility</span> Preview
+            </button>
             <button (click)="saveSurvey()"
                 class="px-6 py-2 bg-nashtech-secondary text-white rounded-full text-sm hover:shadow-lg transition">Save</button>
         </div>
