@@ -7,7 +7,7 @@
         </div>
         <div class="flex items-center gap-3">
             <button class="px-4 py-2 text-sm text-gray-600 hover:text-nashtech-primary transition">Preview</button>
-            <button
+            <button (click)="saveSurvey()"
                 class="px-6 py-2 bg-nashtech-secondary text-white rounded-full text-sm hover:shadow-lg transition">Save</button>
         </div>
     </div>
@@ -30,5 +30,26 @@
             <app-properties-panel [element]="selectedElement"></app-properties-panel>
         </div>
 
+    </div>
+
+    <!-- Success Modal -->
+    <div *ngIf="showSuccessModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" (click)="closeModal()"></div>
+
+        <!-- Modal Content -->
+        <div
+            class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full relative z-10 transform animate-scale-up text-center border border-gray-100">
+            <div
+                class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 text-green-500 animate-bounce-short">
+                <span class="material-icons text-3xl">check</span>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Success!</h3>
+            <p class="text-gray-500 mb-6">Your responses have been saved successfully.</p>
+            <button (click)="closeModal()"
+                class="w-full py-3 bg-gray-900 text-white rounded-xl font-medium hover:bg-gray-800 transition active:scale-95">
+                Got it
+            </button>
+        </div>
     </div>
 </div>

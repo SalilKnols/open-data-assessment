@@ -1,30 +1,17 @@
 package com.nashtech.survey.payload.response;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.nashtech.survey.model.Survey.SurveyStatus;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import java.time.LocalDateTime;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class SurveyResponse {
-    private Long id;
+    private String id; // Changed to String to support UUID
     private String title;
     private String description;
-    private SurveyStatus status;
+    private String status; // Keeping as String for simple JSON serialization
     private JsonNode schemaJson;
-    private Long createdBy;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
-    public SurveyResponse(Long id, String title, String description, SurveyStatus status, JsonNode schemaJson,
-            Long createdBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.status = status;
-        this.schemaJson = schemaJson;
-        this.createdBy = createdBy;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
 }

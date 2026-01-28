@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+
 import { ToolboxComponent } from '../../components/toolbox/toolbox.component';
 import { CanvasComponent } from '../../components/canvas/canvas.component';
 import { PropertiesPanelComponent } from '../../components/properties-panel/properties-panel.component';
 import { SurveyElement } from '../../../../core/models/survey-element.model';
+import { SurveyService, SurveyRequest } from '../../../../core/services/survey.service';
 
 @Component({
   selector: 'app-survey-builder',
@@ -14,10 +16,54 @@ import { SurveyElement } from '../../../../core/models/survey-element.model';
   styleUrls: ['./survey-builder.component.scss']
 })
 export class SurveyBuilderComponent {
-  // Logic for managing dragging or selection state will go here later
+  @ViewChild(CanvasComponent) canvas!: CanvasComponent;
+
   selectedElement: SurveyElement | null = null;
+
+  constructor(private surveyService: SurveyService) { }
 
   onElementSelected(element: SurveyElement | null) {
     this.selectedElement = element;
+  }
+
+  showSuccessModal = false;
+
+  saveSurvey() {
+    if (!this.canvas) return;
+
+    const request: SurveyRequest = {
+      title: this.canvas.surveyTitle || 'Untitled Survey',
+      description: this.canvas.surveyDescription || '',
+      status: 'DRAFT', // Default status
+      schemaJson: {
+        pages: [
+          {
+            name: 'page1',
+            elements: this.canvas.elements
+          }
+        ]
+      }
+    };
+
+    console.log('Saving survey...', request);
+
+    this.surveyService.createSurvey(request).subscribe({
+      next: (response) => {
+        console.log('Survey saved successfully!', response);
+        this.showSuccessModal = true;
+        // Auto-close after 3 seconds
+        setTimeout(() => {
+          this.showSuccessModal = false;
+        }, 3000);
+      },
+      error: (err) => {
+        console.error('Error saving survey:', err);
+        alert('Failed to save survey. Check console for details.');
+      }
+    });
+  }
+
+  closeModal() {
+    this.showSuccessModal = false;
   }
 }

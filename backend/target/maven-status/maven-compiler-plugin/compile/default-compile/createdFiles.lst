@@ -4,8 +4,5 @@ com/nashtech/survey/model/Survey.class
 com/nashtech/survey/model/Survey$SurveyStatus.class
 com/nashtech/survey/repository/UserRepository.class
 com/nashtech/survey/model/User.class
-com/nashtech/survey/service/SurveyService.class
 com/nashtech/survey/payload/response/SurveyResponse.class
-com/nashtech/survey/repository/SurveyRepository.class
-com/nashtech/survey/controller/SurveyController.class
 com/nashtech/survey/payload/response/MessageResponse.class
