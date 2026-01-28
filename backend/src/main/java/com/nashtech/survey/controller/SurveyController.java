@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -31,7 +32,7 @@ public class SurveyController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getSurveyById(@PathVariable Long id) {
+    public ResponseEntity<?> getSurveyById(@PathVariable UUID id) {
         try {
             SurveyResponse response = surveyService.getSurveyById(id);
             return ResponseEntity.ok(response);
@@ -41,7 +42,7 @@ public class SurveyController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateSurvey(@PathVariable Long id, @RequestBody SurveyRequest request) {
+    public ResponseEntity<?> updateSurvey(@PathVariable UUID id, @RequestBody SurveyRequest request) {
         try {
             SurveyResponse response = surveyService.updateSurvey(id, request);
             return ResponseEntity.ok(response);
@@ -51,7 +52,7 @@ public class SurveyController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteSurvey(@PathVariable Long id) {
+    public ResponseEntity<?> deleteSurvey(@PathVariable UUID id) {
         try {
             surveyService.deleteSurvey(id);
             return ResponseEntity.ok(new MessageResponse("Survey deleted successfully!"));

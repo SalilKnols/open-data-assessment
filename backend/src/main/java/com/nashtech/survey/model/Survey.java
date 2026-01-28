@@ -1,58 +1,39 @@
 package com.nashtech.survey.model;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import java.time.LocalDateTime;
+import java.util.UUID;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 @Entity
 @Table(name = "surveys")
 @Data
-@NoArgsConstructor
 public class Survey {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
-    @NotBlank
+    @Column(nullable = false)
     private String title;
 
+    @Column(columnDefinition = "text")
     private String description;
 
-    @Enumerated(EnumType.STRING)
-    private SurveyStatus status = SurveyStatus.DRAFT;
-
-    // JSONB column for storing the entire survey structure
+    @Column(name = "schema_json", columnDefinition = "jsonb")
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb")
     private JsonNode schemaJson;
 
-    private Long createdBy;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+    @Enumerated(EnumType.STRING)
+    private SurveyStatus status;
 
     public enum SurveyStatus {
         DRAFT,
-        ACTIVE,
-        CLOSED,
+        PUBLISHED,
         ARCHIVED
     }
 }
