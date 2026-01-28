@@ -1,0 +1,63 @@
+.btn {
+    @apply inline-flex items-center justify-center font-medium transition-all duration-300 ease-out cursor-pointer select-none rounded-2xl;
+
+    &:focus {
+        @apply outline-none ring-2 ring-offset-2 ring-nashtech-primary;
+    }
+
+    // Sizes
+    &-small {
+        @apply px-4 py-2 text-sm;
+    }
+
+    &-medium {
+        @apply px-6 py-3 text-base;
+    }
+
+    &-large {
+        @apply px-8 py-4 text-lg;
+    }
+
+    // Types
+    &-primary {
+        background: linear-gradient(135deg, #0066cc 0%, #ff6600 100%);
+        @apply text-white shadow-lg shadow-blue-500/30 border-none;
+
+        &:hover:not(:disabled) {
+            @apply transform -translate-y-0.5 shadow-xl shadow-blue-500/40;
+        }
+    }
+
+    &-secondary {
+        @apply bg-white text-nashtech-primary border border-nashtech-primary shadow-sm;
+
+        &:hover:not(:disabled) {
+            @apply bg-nashtech-primary-soft;
+        }
+    }
+
+    &-ghost {
+        @apply bg-transparent text-nashtech-text text-opacity-80 shadow-none;
+
+        &:hover:not(:disabled) {
+            @apply bg-nashtech-primary-soft text-nashtech-primary;
+        }
+    }
+
+    &-icon {
+        @apply rounded-full p-2;
+    }
+
+    // States
+    &-disabled {
+        @apply opacity-50 cursor-not-allowed transform-none shadow-none grayscale;
+    }
+
+    &-full {
+        @apply w-full;
+    }
+}
+
+.btn-icon {
+    @apply mr-2;
+}

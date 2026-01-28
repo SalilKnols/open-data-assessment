@@ -1,0 +1,34 @@
+<div class="builder-layout bg-dot-grid" cdkDropListGroup>
+    <!-- Navbar Placeholder (Glass) -->
+    <div class="builder-navbar glass-panel">
+        <div class="flex items-center gap-4">
+            <h1 class="text-xl font-bold text-nashtech-primary">Survey Builder</h1>
+            <span class="text-sm text-gray-400">/ My First Survey</span>
+        </div>
+        <div class="flex items-center gap-3">
+            <button class="px-4 py-2 text-sm text-gray-600 hover:text-nashtech-primary transition">Preview</button>
+            <button
+                class="px-6 py-2 bg-nashtech-secondary text-white rounded-full text-sm hover:shadow-lg transition">Save</button>
+        </div>
+    </div>
+
+    <!-- Main Workspace -->
+    <div class="builder-workspace">
+
+        <!-- Left: Floating Toolbox -->
+        <div class="builder-sidebar left">
+            <app-toolbox></app-toolbox>
+        </div>
+
+        <!-- Center: Infinite Canvas -->
+        <div class="builder-canvas-area">
+            <app-canvas (elementSelected)="onElementSelected($event)"></app-canvas>
+        </div>
+
+        <!-- Right: Glass Properties Panel (Slide-over effect) -->
+        <div class="builder-sidebar right">
+            <app-properties-panel [element]="selectedElement"></app-properties-panel>
+        </div>
+
+    </div>
+</div>

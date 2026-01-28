@@ -1,0 +1,30 @@
+.builder-layout {
+    @apply h-screen w-full flex flex-col overflow-hidden relative;
+}
+
+.builder-navbar {
+    @apply h-16 w-full px-6 flex items-center justify-between z-50 sticky top-0;
+}
+
+.builder-workspace {
+    @apply flex items-start h-full relative overflow-hidden;
+}
+
+.builder-sidebar {
+
+    // Left Sidebar (Toolbox) - Fixed position handled by component, but wrapper must be visible
+    &.left {
+        @apply absolute left-0 top-0 h-full w-0 z-50;
+        /* Zero width to not affect layout, but visible */
+    }
+
+    // Right Sidebar (Properties)
+    &.right {
+        @apply w-80 h-full z-20 bg-white/80 backdrop-blur-md shadow-xl border-l border-white/50 relative;
+    }
+}
+
+.builder-canvas-area {
+    @apply flex-1 h-full overflow-auto flex justify-center p-8 z-10 ml-20;
+    /* Add margin for floating sidebar */
+}

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "open-data-assessment-improved": {
+    "frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -15,11 +15,11 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/open-data-assessment-improved",
+            "outputPath": "dist/frontend",
             "index": "src/index.html",
-            "main": "src/main.ts",
+            "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
@@ -44,25 +44,16 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "10kb",
-                  "maximumError": "20kb"
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
                 }
               ],
-              "outputHashing": "all",
-              "fileReplacements": [
-                {
-                  "replace": "src/app/environments/environment.ts",
-                  "with": "src/app/environments/environment.prod.ts"
-                }
-              ]
+              "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
@@ -71,18 +62,40 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "open-data-assessment-improved:build:production"
+              "buildTarget": "frontend:build:production"
             },
             "development": {
-              "buildTarget": "open-data-assessment-improved:build:development"
+              "buildTarget": "frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "buildTarget": "frontend:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.scss"
+            ],
+            "scripts": []
+          }
         }
       }
     }
-  },
-  "cli": {
-    "analytics": "4063ca28-3b08-4f35-92f2-d947e89b5f48"
   }
 }

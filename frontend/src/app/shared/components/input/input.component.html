@@ -1,0 +1,11 @@
+<div class="input-group">
+    <label *ngIf="label" [for]="id" class="input-label">{{ label }}</label>
+
+    <div class="input-wrapper">
+        <input [type]="type" [id]="id" [placeholder]="placeholder" [value]="value" [disabled]="disabled"
+            (input)="onInput($event)" (blur)="onTouch()" class="form-input" [class.has-error]="!!error" />
+        <!-- Optional Icon slot could go here -->
+    </div>
+
+    <span *ngIf="error" class="input-error">{{ error }}</span>
+</div>

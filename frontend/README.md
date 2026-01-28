@@ -1,22 +1,27 @@
-# Frontend - NashTech SurveyHub
+# Frontend
 
-## Angular Frontend
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.17.
 
-This directory contains the Angular application for the Survey Platform.
+## Development server
 
-### Current State
-This is the existing Open Data Assessment Angular application, which will be:
-1. Refactored to work with the new Spring Boot backend
-2. Enhanced with dynamic survey rendering capabilities
-3. Expanded to include Admin Dashboard and Survey Builder UI
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-### Running Locally
-```bash
-cd frontend
-npm install
-npm start
-```
+## Code scaffolding
 
-The application will be available at `http://localhost:4200`
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-**Note:** Currently configured for Firebase. Will be updated to use Spring Boot APIs in future feature branches.
+## Build
+
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+
+## Running unit tests
+
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

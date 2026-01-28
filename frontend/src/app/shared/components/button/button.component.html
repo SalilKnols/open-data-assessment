@@ -1,0 +1,5 @@
+<button [class]="classes" (click)="handleClick($event)" [disabled]="disabled">
+    <span *ngIf="icon" [class]="icon" class="btn-icon"></span>
+    <span *ngIf="label">{{ label }}</span>
+    <ng-content></ng-content>
+</button>
