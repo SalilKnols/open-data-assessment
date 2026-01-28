@@ -13,5 +13,9 @@ export const routes: Routes = [
     {
         path: 'builder',
         loadComponent: () => import('./features/survey-builder/pages/survey-builder/survey-builder.component').then(m => m.SurveyBuilderComponent)
+    },
+    {
+        path: 'preview',
+        loadComponent: () => import('./features/survey-builder/pages/survey-preview/survey-preview.component').then(m => m.SurveyPreviewComponent)
     }
 ];

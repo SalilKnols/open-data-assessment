@@ -7,12 +7,12 @@ module.exports = {
     extend: {
       colors: {
         nashtech: {
-          primary: '#0066cc',
+          'primary': '#0066cc',
           'primary-soft': '#e6f0ff',
-          secondary: '#ff6600',
-          bg: '#f8f9fc',
-          surface: '#ffffff',
-          text: '#1a202c',
+          'secondary': '#ff6600',
+          'accent': '#00a86b',
+          'surface': '#ffffff',
+          'text': '#1a202c',
           'text-light': '#4a5568',
         }
       },

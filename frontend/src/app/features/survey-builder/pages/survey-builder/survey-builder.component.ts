@@ -63,6 +63,21 @@ export class SurveyBuilderComponent {
     });
   }
 
+  openPreview() {
+    if (!this.canvas) return;
+
+    const previewData = {
+      title: this.canvas.surveyTitle || 'Untitled Survey',
+      description: this.canvas.surveyDescription || '',
+      elements: this.canvas.elements
+    };
+
+    localStorage.setItem('preview_draft', JSON.stringify(previewData));
+
+    // Open in a named tab to avoid duplicates
+    window.open('/preview', 'survey_preview_tab');
+  }
+
   closeModal() {
     this.showSuccessModal = false;
   }
